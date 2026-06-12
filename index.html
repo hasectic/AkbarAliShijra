@@ -90,8 +90,7 @@
 				height: 100%;
 				background-color: #c8bfa7;
 			}
-			.tree-container ul > li:last-child::after,
-			.tree-container ul > details:last-child::after {
+			.tree-container ul > li:last-child::after {
 				content: '';
 				position: absolute;
 				top: 22px;
@@ -100,8 +99,7 @@
 				height: 100%;
 				background-color: #f7f4eb;
 			}
-			.tree-container li,
-			.tree-container details {
+			.tree-container li {
 				position: relative;
 				margin: 8px 0;
 			}
@@ -143,7 +141,7 @@
 				cursor: pointer;
 			}
 			/* Root node */
-			.root-node > summary > .node-wrapper > .node {
+			.root-node > .node-wrapper > .node {
 				background-color: #63482a;
 				color: #ffffff;
 				border-color: #4a3319;
@@ -160,8 +158,8 @@
 			details[open] > summary > .node-wrapper > .node .icon::before {
 				content: '−';
 			}
-			.root-node > summary > .node-wrapper > .node .icon {
-				color: #ffffff;
+			.root-node > .node-wrapper > .node .icon {
+				display: none;
 			}
 
 			.highlight {
@@ -172,7 +170,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>Family Tree (Shijra)</h1>
+		<h1>Family Tree (Shijra / شجرہ)</h1>
 		<p class="subtitle">
 			Click on bold names to expand / collapse branches
 		</p>
@@ -190,75 +188,66 @@
 		<div class="tree-container" id="tree-root"></div>
 
 		<script>
-			// ─────────────────────────────────────────────────────────────────
-			//  FAMILY DATA
-			//  Each person is an object: { name, children? }
-			//  children is an optional array of the same structure.
-			//  To add a person: add an object to the right children array.
-			//  To remove: delete the object.
-			//  Leaf nodes (no children) render as plain white pills.
-			//  Branch nodes (with children) render as beige expandable pills.
-			// ─────────────────────────────────────────────────────────────────
 			const familyData = {
-				name: 'Quasim Ali',
+				name: 'Quasim Ali (قاسم علی)',
 				children: [
 					{
-						name: 'Abdullah',
+						name: 'Abdullah (عبداللہ)',
 						children: [
 							{
-								name: 'Haidar Ali',
+								name: 'Haidar Ali (حیدر علی)',
 								children: [
 									{
-										name: 'Adham Ali',
+										name: 'Adham Ali (ادہم علی)',
 										children: [
 											{
-												name: 'Akbar Ali',
+												name: 'Akbar Ali (اکبر علی)',
 												children: [
 													// ── Branch 1: Sirajul-Haque ──────────────────
 													{
-														name: 'Sirajul-Haque',
+														name: 'Sirajul-Haque (سراج الحق)',
 														children: [
 															{
-																name: 'Abdur Rahman',
+																name: 'Abdur Rahman (عبدالرحمٰن)',
 																children: [
 																	{
-																		name: 'Jameel Ahmad',
+																		name: 'Jameel Ahmad (جمیل احمد)',
 																		children:
 																			[
 																				{
-																					name: 'Khurshid'
+																					name: 'Khurshid (خورشید)'
 																				},
 																				{
-																					name: 'Dulare'
+																					name: 'Dulare (دولارے)'
 																				},
 																				{
-																					name: 'Maqbool'
+																					name: 'Maqbool (مقبول)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Mutiur Rahaman',
+																name: 'Mutiur Rahaman (مطیع الرحمن)',
 																children: [
 																	{
-																		name: 'Afaque'
+																		name: 'Afaque (آفاق)'
 																	},
 																	{
-																		name: 'Mushtaque',
+																		name: 'Mushtaque (مشتاق)',
 																		children:
 																			[
 																				{
-																					name: 'Abdullah'
+																					name: 'Abdullah (عبداللہ)'
 																				},
 																				{
-																					name: 'Sanaullah'
+																					name: 'Sanaullah (ثناء اللہ)'
 																				},
 																				{
-																					name: 'Enayatullah'
+																					name: 'Enayatullah (عنایت اللہ)'
 																				},
 																				{
-																					name: 'Rezaullah'
+																					name: 'Rezaullah (رضاء اللہ)'
 																				}
 																			]
 																	}
@@ -269,435 +258,435 @@
 
 													// ── Branch 2: Umar Ali ───────────────────────
 													{
-														name: 'Umar Ali',
+														name: 'Umar Ali (عمر علی)',
 														children: [
 															{
-																name: 'Abdullah',
+																name: 'Abdullah (عبداللہ)',
 																children: [
 																	{
-																		name: 'Ataur-Rahman',
+																		name: 'Ataur-Rahman (عطاء الرحمن)',
 																		children:
 																			[
 																				{
-																					name: 'Izhar'
+																					name: 'Izhar (اظہار)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Ubaidullah',
+																name: 'Ubaidullah (عبیداللہ)',
 																children: [
 																	{
-																		name: 'Abdul Ahad',
+																		name: 'Abdul Ahad (عبدالاحد)',
 																		children:
 																			[
 																				{
-																					name: 'Ajaz',
+																					name: 'Ajaz (اعجاز)',
 																					children:
 																						[
 																							{
-																								name: 'Saqlain'
+																								name: 'Saqlain (ثقلین)'
 																							},
 																							{
-																								name: 'Kaunain'
+																								name: 'Kaunain (کونین)'
 																							},
 																							{
-																								name: 'Hasnain'
+																								name: 'Hasnain (حسنین)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Faiyaz',
+																					name: 'Faiyaz (فیاض)',
 																					children:
 																						[
 																							{
-																								name: 'Dayyan'
+																								name: 'Dayyan (دیان)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Reyaz',
+																					name: 'Reyaz (ریاض)',
 																					children:
 																						[
 																							{
-																								name: 'Ibrahim'
+																								name: 'Ibrahim (ابراہیم)'
 																							},
 																							{
-																								name: 'Ayan'
+																								name: 'Ayan (ایان)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Imteyaz',
+																					name: 'Imteyaz (امتیاز)',
 																					children:
 																						[
 																							{
-																								name: 'Zaid'
+																								name: 'Zaid (زید)'
 																							},
 																							{
-																								name: 'Zubaid'
+																								name: 'Zubaid (زبید)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Zulfiqar'
+																					name: 'Zulfiqar (ذوالفقار)'
 																				},
 																				{
-																					name: 'Jawwad'
+																					name: 'Jawwad (جواد)'
 																				},
 																				{
-																					name: 'Iqbal'
+																					name: 'Iqbal (اقبال)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Ahmad Ali',
+																		name: 'Ahmad Ali (احمد علی)',
 																		children:
 																			[
 																				{
-																					name: 'Maqsood'
+																					name: 'Maqsood (مقصود)'
 																				},
 																				{
-																					name: 'Marghoob'
+																					name: 'Marghoob (مرغوب)'
 																				},
 																				{
-																					name: 'Saheb'
+																					name: 'Saheb (صاحب)'
 																				},
 																				{
-																					name: 'Mansoor'
+																					name: 'Mansoor (منصور)'
 																				},
 																				{
-																					name: 'Mehboob'
+																					name: 'Mehboob (محبوب)'
 																				},
 																				{
-																					name: 'Marghoob'
+																					name: 'Marghoob (مرغوب)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Abdul Bari',
+																		name: 'Abdul Bari (عبدالباری)',
 																		children:
 																			[
 																				{
-																					name: 'Shahabuddin',
+																					name: 'Shahabuddin (شہاب الدین)',
 																					children:
 																						[
 																							{
-																								name: 'Ahmad'
+																								name: 'Ahmad (احمد)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Zeyauddin'
+																					name: 'Zeyauddin (ضیاء الدین)'
 																				},
 																				{
-																					name: 'Ehteshamuddin'
+																					name: 'Ehteshamuddin (احتشام الدین)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Abdul Majeed'
+																name: 'Abdul Majeed (عبدالمجید)'
 															}
 														]
 													},
 
 													// ── Branch 3: Nawab Ali ──────────────────────
 													{
-														name: 'Nawab Ali',
+														name: 'Nawab Ali (نواب علی)',
 														children: [
 															{
-																name: 'Abdur Razzaq',
+																name: 'Abdur Razzaq (عبدالرزاق)',
 																children: [
 																	{
-																		name: 'Zafar Alam',
+																		name: 'Zafar Alam (ظفر عالم)',
 																		children:
 																			[
 																				{
-																					name: 'Saeed'
+																					name: 'Saeed (سعید)'
 																				},
 																				{
-																					name: 'Rashid'
+																					name: 'Rashid (راشد)'
 																				},
 																				{
-																					name: 'Sultan'
+																					name: 'Sultan (سلطان)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Zaheer Alam',
+																		name: 'Zaheer Alam (ظہیر عالم)',
 																		children:
 																			[
 																				{
-																					name: 'Tanweer'
+																					name: 'Tanweer (تنویر)'
 																				},
 																				{
-																					name: 'Tauseef'
+																					name: 'Tauseef (توصیف)'
 																				},
 																				{
-																					name: 'Tauqeer'
+																					name: 'Tauqeer (توقیر)'
 																				},
 																				{
-																					name: 'Tafseer'
+																					name: 'Tafseer (تفسیر)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Badre Alam',
+																		name: 'Badre Alam (بدر عالم)',
 																		children:
 																			[
 																				{
-																					name: 'Rizwan',
+																					name: 'Rizwan (رضوان)',
 																					children:
 																						[
 																							{
-																								name: 'Modabbir'
+																								name: 'Modabbir (مدبر)'
 																							},
 																							{
-																								name: 'Mubashir'
+																								name: 'Mubashir (مبشر)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Hassan',
+																					name: 'Hassan (حسن)',
 																					children:
 																						[
 																							{
-																								name: 'Maaz'
+																								name: 'Maaz (معاذ)'
 																							},
 																							{
-																								name: 'Muawiz'
+																								name: 'Muawiz (معوذ)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Affan'
+																					name: 'Affan (عفان)'
 																				},
 																				{
-																					name: 'Sufiyan'
+																					name: 'Sufiyan (سفیان)'
 																				},
 																				{
-																					name: 'Rehan'
+																					name: 'Rehan (ریحان)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Abdul Ghaffar',
+																name: 'Abdul Ghaffar (عبدالغفار)',
 																children: [
 																	{
-																		name: 'Shamshuz Zuha',
+																		name: 'Shamshuz Zuha (شمس الضحیٰ)',
 																		children:
 																			[
 																				{
-																					name: 'Ashraf',
+																					name: 'Ashraf (اشرف)',
 																					children:
 																						[
 																							{
-																								name: 'Ibrahim'
+																								name: 'Ibrahim (ابراہیم)'
 																							},
 																							{
-																								name: 'Ismail'
+																								name: 'Ismail (اسماعیل)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Ahsan',
+																					name: 'Ahsan (احسن)',
 																					children:
 																						[
 																							{
-																								name: 'Rayyan'
+																								name: 'Rayyan (ریان)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Ehsan'
+																					name: 'Ehsan (احسان)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Qamraul Huda',
+																		name: 'Qamraul Huda (قمر الہدیٰ)',
 																		children:
 																			[
 																				{
-																					name: 'Zeya'
+																					name: 'Zeya (ضیاء)'
 																				},
 																				{
-																					name: 'Raafe',
+																					name: 'Raafe (رافع)',
 																					children:
 																						[
 																							{
-																								name: 'Ramish'
+																								name: 'Ramish (رامش)'
 																							},
 																							{
-																								name: 'Ashir'
+																								name: 'Ashir (عاشر)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Ikram'
+																					name: 'Ikram (اکرام)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Abdul Fatah',
+																name: 'Abdul Fatah (عبدالفتاح)',
 																children: [
 																	{
-																		name: 'Umar Tarique',
+																		name: 'Umar Tarique (عمر طارق)',
 																		children:
 																			[
 																				{
-																					name: 'Adnan'
+																					name: 'Adnan (عدنان)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Umar Khalid'
+																		name: 'Umar Khalid (عمر خالد)'
 																	},
 																	{
-																		name: 'Rashid',
+																		name: 'Rashid (راشد)',
 																		children:
 																			[
 																				{
-																					name: 'Yaqoob'
+																					name: 'Yaqoob (یعقوب)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Abdul Hameed',
+																name: 'Abdul Hameed (عبدالحمید)',
 																children: [
 																	{
-																		name: 'Urooj',
+																		name: 'Urooj (عروج)',
 																		children:
 																			[
 																				{
-																					name: 'Sharique'
+																					name: 'Sharique (شارق)'
 																				},
 																				{
-																					name: 'Saim'
+																					name: 'Saim (صائم)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Iqbal',
+																		name: 'Iqbal (اقبال)',
 																		children:
 																			[
 																				{
-																					name: 'Hamid'
+																					name: 'Hamid (حامد)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Aarif'
+																		name: 'Aarif (عارف)'
 																	}
 																]
 															},
 															{
-																name: 'Abdul Wahab',
+																name: 'Abdul Wahab (عبدالوہاب)',
 																children: [
 																	{
-																		name: 'Aleem',
+																		name: 'Aleem (علیم)',
 																		children:
 																			[
 																				{
-																					name: 'Jawed',
+																					name: 'Jawed (جاوید)',
 																					children:
 																						[
 																							{
-																								name: 'Aquib'
+																								name: 'Aquib (عاقب)'
 																							},
 																							{
-																								name: 'Aatif'
+																								name: 'Aatif (عاطف)'
 																							},
 																							{
-																								name: 'Asim'
+																								name: 'Asim (عاصم)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Masood',
+																					name: 'Masood (مسعود)',
 																					children:
 																						[
 																							{
-																								name: 'Abdullah'
+																								name: 'Abdullah (عبداللہ)'
 																							},
 																							{
-																								name: 'Osama'
+																								name: 'Osama (اسامہ)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Saud'
+																					name: 'Saud (سعود)'
 																				},
 																				{
-																					name: 'Shakeel',
+																					name: 'Shakeel (شکیل)',
 																					children:
 																						[
 																							{
-																								name: 'Nabil'
+																								name: 'Nabil (نبيل)'
 																							}
 																						]
 																				}
 																			]
 																	},
 																	{
-																		name: 'Jameel',
+																		name: 'Jameel (جمیل)',
 																		children:
 																			[
 																				{
-																					name: 'Inayat'
+																					name: 'Inayat (عنایت)'
 																				},
 																				{
-																					name: 'Hidayat'
+																					name: 'Hidayat (ہدایت)'
 																				},
 																				{
-																					name: 'Ayat'
+																					name: 'Ayat (آیت)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Mohammad',
+																		name: 'Mohammad (محمد)',
 																		children:
 																			[
 																				{
-																					name: 'Arshad'
+																					name: 'Arshad (ارشد)'
 																				},
 																				{
-																					name: 'Saquib'
+																					name: 'Saquib (ثاقب)'
 																				},
 																				{
-																					name: 'Kashif'
+																					name: 'Kashif (کاشف)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Mahmood',
+																		name: 'Mahmood (محمود)',
 																		children:
 																			[
 																				{
-																					name: 'Yasir'
+																					name: 'Yasir (یاسر)'
 																				},
 																				{
-																					name: 'Tahir'
+																					name: 'Tahir (طاہر)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Muhamid',
+																		name: 'Muhamid (محامد)',
 																		children:
 																			[
 																				{
-																					name: 'Zulqarnain'
+																					name: 'Zulqarnain (ذوالقرنین)'
 																				},
 																				{
-																					name: 'Saifi'
+																					name: 'Saifi (سیفی)'
 																				}
 																			]
 																	}
@@ -708,260 +697,260 @@
 
 													// ── Branch 4: Junaab Ali ─────────────────────
 													{
-														name: 'Junaab Ali',
+														name: 'Junaab Ali (جناب علی)',
 														children: [
 															{
-																name: 'Habibur Rahman',
+																name: 'Habibur Rahman (حبیب الرحمن)',
 																children: [
 																	{
-																		name: 'Aslam',
+																		name: 'Aslam (اسلم)',
 																		children:
 																			[
 																				{
-																					name: 'Aftab',
+																					name: 'Aftab (آفتاب)',
 																					children:
 																						[
 																							{
-																								name: 'Yasir'
+																								name: 'Yasir (یاسر)'
 																							},
 																							{
-																								name: 'Hamid'
+																								name: 'Hamid (حامد)'
 																							},
 																							{
-																								name: 'Ammar'
+																								name: 'Ammar (عمار)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Intekhab',
+																					name: 'Intekhab (انتخاب)',
 																					children:
 																						[
 																							{
-																								name: 'Yusuf'
+																								name: 'Yusuf (یوسف)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Mehtab',
+																					name: 'Mehtab (مہتاب)',
 																					children:
 																						[
 																							{
-																								name: 'Abdullah'
+																								name: 'Abdullah (عبداللہ)'
 																							},
 																							{
-																								name: 'Mohammad'
+																								name: 'Mohammad (محمد)'
 																							}
 																						]
 																				}
 																			]
 																	},
 																	{
-																		name: 'Mustafa',
+																		name: 'Mustafa (مصطفیٰ)',
 																		children:
 																			[
 																				{
-																					name: 'Tanweer',
+																					name: 'Tanweer (تنویر)',
 																					children:
 																						[
 																							{
-																								name: 'Ibrahim'
+																								name: 'Ibrahim (ابراہیم)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Tauqeer'
+																					name: 'Tauqeer (توقیر)'
 																				},
 																				{
-																					name: 'Tauseef',
+																					name: 'Tauseef (توصیف)',
 																					children:
 																						[
 																							{
-																								name: 'Abdur Rehman'
+																								name: 'Abdur Rehman (عبدالرحمن)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Waqar'
+																					name: 'Waqar (وقار)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Zakir',
+																		name: 'Zakir (ذاکر)',
 																		children:
 																			[
 																				{
-																					name: 'Shafquat'
+																					name: 'Shafquat (شفقت)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Shakir',
+																		name: 'Shakir (شاکر)',
 																		children:
 																			[
 																				{
-																					name: 'Saquib'
+																					name: 'Saquib (ثاقب)'
 																				},
 																				{
-																					name: 'Aquib'
+																					name: 'Aquib (عاقب)'
 																				},
 																				{
-																					name: 'Rashid'
+																					name: 'Rashid (راشد)'
 																				},
 																				{
-																					name: 'Khalid'
+																					name: 'Khalid (خالد)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Nasir',
+																		name: 'Nasir (ناصر)',
 																		children:
 																			[
 																				{
-																					name: 'Altamash'
+																					name: 'Altamash (التتمش)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Qaisar',
+																		name: 'Qaisar (قیصر)',
 																		children:
 																			[
 																				{
-																					name: 'Danish'
+																					name: 'Danish (دانش)'
 																				},
 																				{
-																					name: 'Tabish'
+																					name: 'Tabish (تابش)'
 																				}
 																			]
 																	}
 																]
 															},
 															{
-																name: 'Azizur Rahman',
+																name: 'Azizur Rahman (عزیز الرحمن)',
 																children: [
 																	{
-																		name: 'Shakoor',
+																		name: 'Shakoor (شکور)',
 																		children:
 																			[
 																				{
-																					name: 'Ishteyaq',
+																					name: 'Ishteyaq (اشتیاق)',
 																					children:
 																						[
 																							{
-																								name: 'Kamran'
+																								name: 'Kamran (کامران)'
 																							},
 																							{
-																								name: 'Furqan'
+																								name: 'Furqan (فرقان)'
 																							},
 																							{
-																								name: 'Farhan'
+																								name: 'Farhan (فرحان)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Iftekhar',
+																					name: 'Iftekhar (افتخار)',
 																					children:
 																						[
 																							{
-																								name: 'Saif'
+																								name: 'Saif (سیف)'
 																							},
 																							{
-																								name: 'Kaif'
+																								name: 'Kaif (کیف)'
 																							},
 																							{
-																								name: 'Faiz'
+																								name: 'Faiz (فیض)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Imteyaz',
+																					name: 'Imteyaz (امتیاز)',
 																					children:
 																						[
 																							{
-																								name: 'Mohammad'
+																								name: 'Mohammad (محمد)'
 																							}
 																						]
 																				}
 																			]
 																	},
 																	{
-																		name: 'Rauf',
+																		name: 'Rauf (رؤف)',
 																		children:
 																			[
 																				{
-																					name: 'Zahirul',
+																					name: 'Zahirul (ظہیرال)',
 																					children:
 																						[
 																							{
-																								name: 'Shamsher'
+																								name: 'Shamsher (شمشیر)'
 																							},
 																							{
-																								name: 'Tanweer'
+																								name: 'Tanweer (تنویر)'
 																							},
 																							{
-																								name: 'Nafis'
+																								name: 'Nafis (نفیس)'
 																							},
 																							{
-																								name: 'Rais'
+																								name: 'Rais (رئیس)'
 																							},
 																							{
-																								name: 'Said'
+																								name: 'Said (سعید)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Nasirul',
+																					name: 'Nasirul (ناصرال)',
 																					children:
 																						[
 																							{
-																								name: 'Haidar'
+																								name: 'Haidar (حیدر)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Bashir'
+																					name: 'Bashir (بشیر)'
 																				},
 																				{
-																					name: 'Sagheer',
+																					name: 'Sagheer (صغیر)',
 																					children:
 																						[
 																							{
-																								name: 'Shahid'
+																								name: 'Shahid (شاہد)'
 																							},
 																							{
-																								name: 'Mujahid'
+																								name: 'Mujahid (مجاھد)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Shabbir',
+																					name: 'Shabbir (شبیر)',
 																					children:
 																						[
 																							{
-																								name: 'Armaan'
+																								name: 'Armaan (ارمان)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Ariz',
+																					name: 'Ariz (عارض)',
 																					children:
 																						[
 																							{
-																								name: 'Ehtesham'
+																								name: 'Ehtesham (احتشام)'
 																							},
 																							{
-																								name: 'Emad'
+																								name: 'Emad (عماد)'
 																							},
 																							{
-																								name: 'Imran'
+																								name: 'Imran (عمران)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Arif',
+																					name: 'Arif (عارف)',
 																					children:
 																						[
 																							{
-																								name: 'Ayaan'
+																								name: 'Ayaan (ایان)'
 																							}
 																						]
 																				}
@@ -970,122 +959,123 @@
 																]
 															},
 															{
-																name: 'Haroon',
+																name: 'Haroon (ہارون)',
 																children: [
 																	{
-																		name: 'Sabir',
+																		name: 'Sabir (صابر)',
 																		children:
 																			[
 																				{
-																					name: 'Akram'
+																					name: 'Akram (اکرم)'
 																				},
 																				{
-																					name: 'Sanaullah'
+																					name: 'Sanaullah (ثناء اللہ)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Jabir',
+																		name: 'Jabir (جابر)',
 																		children:
 																			[
 																				{
-																					name: 'Wasim',
+																					name: 'Wasim (وسیم)',
 																					children:
 																						[
 																							{
-																								name: 'Arham'
+																								name: 'Arham (ارحم)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Nasim'
+																					name: 'Nasim (نسیم)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Sajid',
+																		name: 'Sajid (ساجد)',
 																		children:
 																			[
 																				{
-																					name: 'Muzakkir'
+																					name: 'Muzakkir (مذکر)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Majid',
+																		name: 'Majid (ماجد)',
 																		children:
 																			[
 																				{
-																					name: 'Saifullah',
+																					name: 'Saifullah (سیف اللہ)',
 																					children:
 																						[
 																							{
-																								name: 'Mugheerah'
+																								name: 'Mugheerah (مغیرہ)'
 																							},
-
 																							{
-																								name: 'Musab'
+																								name: 'Musab (مصعب)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Amanullah'
+																					name: 'Amanullah (امان اللہ)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Abid',
+																		name: 'Abid (عابد)',
 																		children:
 																			[
 																				{
-																					name: 'Abdullah'
+																					name: 'Abdullah (عبداللہ)'
 																				},
 																				{
-																					name: 'Inayat'
+																					name: 'Inayat (عنایت)'
 																				}
 																			]
 																	}
 																]
 															},
-															{ name: 'Dawood' },
 															{
-																name: 'Nurul Hasan',
+																name: 'Dawood (داؤد)'
+															},
+															{
+																name: 'Nurul Hasan (نور الحسن)',
 																children: [
 																	{
-																		name: 'Junaid'
+																		name: 'Junaid (جنید)'
 																	},
 																	{
-																		name: 'Shakeel'
+																		name: 'Shakeel (شکیل)'
 																	},
 																	{
-																		name: 'Aqeel'
+																		name: 'Aqeel (عقیل)'
 																	}
 																]
 															},
 															{
-																name: 'Ameerul Hasan',
+																name: 'Ameerul Hasan (امیر الحسن)',
 																children: [
 																	{
-																		name: 'Faiyaz Ahmad',
+																		name: 'Faiyaz (فیاض)',
 																		children:
 																			[
 																				{
-																					name: 'Adnan'
+																					name: 'Adnan (عدنان)'
 																				},
 																				{
-																					name: 'Wajahat'
+																					name: 'Wajahat (وجاہت)'
 																				}
 																			]
 																	},
 																	{
-																		name: 'Perwez Ahmad',
+																		name: 'Perwez (پرویز)',
 																		children:
 																			[
 																				{
-																					name: 'Abbad'
+																					name: 'Abbad (عباد)'
 																				},
 																				{
-																					name: 'Hisham'
+																					name: 'Hesham (ہشام)'
 																				}
 																			]
 																	}
@@ -1094,98 +1084,98 @@
 														]
 													},
 
-													// ── Branch 2: Anwar Ali ───────────────────────
+													// ── Branch 5: Anwar Ali ───────────────────────
 													{
-														name: 'Anwar Ali',
+														name: 'Anwar Ali (انور علی)',
 														children: [
 															{
-																name: 'Dr. Ayyub',
+																name: 'Dr. Ayyub (ڈاکٹر ایوب)',
 																children: [
 																	{
-																		name: 'Umar Ahsan',
+																		name: 'Umar Ahsan (عمر احسن)',
 																		children:
 																			[
 																				{
-																					name: 'Tanweer',
+																					name: 'Tanweer (تنویر)',
 																					children:
 																						[
 																							{
-																								name: 'Ubedah'
+																								name: 'Ubedah (عبیدہ)'
 																							},
 																							{
-																								name: 'Huzaifa'
+																								name: 'Huzaifa (حذیفہ)'
 																							},
 																							{
-																								name: 'Khuzaima'
+																								name: 'Khuzaima (خزیمہ)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Arshi',
+																					name: 'Arshi (عرشی)',
 																					children:
 																						[
 																							{
-																								name: 'Ammar'
+																								name: 'Ammar (عمار)'
 																							},
 																							{
-																								name: 'Saad'
+																								name: 'Saad (سعد)'
 																							},
 																							{
-																								name: 'Qutaiba'
+																								name: 'Qutaiba (قتیبہ)'
 																							}
 																						]
 																				}
 																			]
 																	},
 																	{
-																		name: 'Akhtar Naseh',
+																		name: 'Akhtar Naseh (اختر ناصح)',
 																		children:
 																			[
 																				{
-																					name: 'Asif',
+																					name: 'Asif (آصف)',
 																					children:
 																						[
 																							{
-																								name: 'Faisal'
+																								name: 'Faisal (فیصل)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Iqbal',
+																					name: 'Iqbal (اقبال)',
 																					children:
 																						[
 																							{
-																								name: 'Sharjeel'
+																								name: 'Sharjeel (شرجیل)'
 																							},
 																							{
-																								name: 'Raheel'
+																								name: 'Raheel (راحیل)'
 																							},
 																							{
-																								name: 'Daniyal'
+																								name: 'Daniyal (دانیال)'
 																							},
 																							{
-																								name: 'Aseel'
+																								name: 'Aseel (اصیل)'
 																							},
 																							{
-																								name: 'Haseel'
+																								name: 'Haseel (حصیل)'
 																							},
 																							{
-																								name: 'Takmeel'
+																								name: 'Takmeel (تکمیل)'
 																							}
 																						]
 																				},
 																				{
-																					name: 'Salman',
+																					name: 'Salman (سلمان)',
 																					children:
 																						[
 																							{
-																								name: 'Ghazali'
+																								name: 'Ghazali (غزالی)'
 																							},
 																							{
-																								name: 'Hejazi'
+																								name: 'Hejazi (حجازی)'
 																							},
 																							{
-																								name: 'Razi'
+																								name: 'Razi (رازی)'
 																							}
 																						]
 																				}
@@ -1194,13 +1184,13 @@
 																]
 															},
 															{
-																name: 'Md Shoaib',
+																name: 'Md Shoaib (محمد شعیب)',
 																children: [
 																	{
-																		name: 'Hasan'
+																		name: 'Hasan (حسن)'
 																	},
 																	{
-																		name: 'Hasnain'
+																		name: 'Hasnain (حسنین)'
 																	}
 																]
 															}
@@ -1218,18 +1208,20 @@
 			};
 
 			// ─────────────────────────────────────────────────────────────────
-			//  RENDERER  —  do not edit below unless changing structure/style
+			//  RENDERER
 			// ─────────────────────────────────────────────────────────────────
-
 			function buildNode(person, isRoot = false) {
 				const hasChildren =
 					person.children && person.children.length > 0;
 
 				if (hasChildren) {
+					// Create list element for formatting logic to work properly
+					const li = document.createElement('li');
+
 					const details = document.createElement('details');
 					if (isRoot) {
 						details.open = true;
-						details.className = 'root-node';
+						li.className = 'root-node';
 					}
 
 					const summary = document.createElement('summary');
@@ -1242,11 +1234,15 @@
 					);
 					details.appendChild(ul);
 
-					// Wrap non-root branch nodes in a list item so connector lines work
-					if (isRoot) return details;
-					const wrapper = document.createElement('li');
-					// We actually want details directly in ul for connector lines — return details directly
-					return details;
+					if (isRoot) {
+						// Root node doesn't need <details> markup to look like a sub-branch
+						li.innerHTML = `<div class="node-wrapper"><span class="node">${person.name}</span></div>`;
+						li.appendChild(ul);
+						return li;
+					}
+
+					li.appendChild(details);
+					return li;
 				} else {
 					// Leaf node
 					const li = document.createElement('li');
@@ -1257,7 +1253,9 @@
 
 			function renderTree() {
 				const root = document.getElementById('tree-root');
-				root.appendChild(buildNode(familyData, true));
+				const containerUl = document.createElement('ul');
+				containerUl.appendChild(buildNode(familyData, true));
+				root.appendChild(containerUl);
 			}
 
 			function toggleAll(state) {
