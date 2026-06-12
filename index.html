@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Akbar Ali Family Tree (Shijra)</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 40px 20px;
+				background-color: #f7f4eb;
+				color: #4a3319;
+			}
+			h1 {
+				text-align: center;
+				font-size: 2.5rem;
+				margin-bottom: 5px;
+				color: #4a3319;
+			}
+			.subtitle {
+				text-align: center;
+				color: #8c765c;
+				margin-bottom: 30px;
+				font-size: 1.1rem;
+			}
+			.controls {
+				display: flex;
+				justify-content: center;
+				gap: 10px;
+				margin-bottom: 40px;
+				flex-wrap: wrap;
+			}
+			input#search {
+				padding: 10px 15px;
+				width: 300px;
+				border: 1px solid #c8bfa7;
+				border-radius: 6px;
+				background-color: #ffffff;
+				color: #4a3319;
+				font-size: 0.95rem;
+				outline: none;
+			}
+			input#search:focus {
+				border-color: #63482a;
+				box-shadow: 0 0 5px rgba(99, 72, 42, 0.2);
+			}
+			button {
+				padding: 10px 20px;
+				background-color: #63482a;
+				color: #ffffff;
+				border: none;
+				border-radius: 6px;
+				font-weight: bold;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background-color: #4a3319;
+			}
+
+			.tree-container {
+				max-width: 960px;
+				margin: 0 auto;
+				padding-left: 20px;
+			}
+			.tree-container ul {
+				list-style-type: none;
+				margin: 0;
+				padding-left: 30px;
+				position: relative;
+			}
+			.tree-container details {
+				outline: none;
+				position: relative;
+			}
+			.tree-container summary {
+				list-style: none;
+				outline: none;
+			}
+			.tree-container summary::-webkit-details-marker {
+				display: none;
+			}
+
+			.tree-container ul::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 10px;
+				width: 2px;
+				height: 100%;
+				background-color: #c8bfa7;
+			}
+			.tree-container ul > li:last-child::after,
+			.tree-container ul > details:last-child::after {
+				content: '';
+				position: absolute;
+				top: 22px;
+				left: 10px;
+				width: 2px;
+				height: 100%;
+				background-color: #f7f4eb;
+			}
+			.tree-container li,
+			.tree-container details {
+				position: relative;
+				margin: 8px 0;
+			}
+			.node-wrapper {
+				position: relative;
+				display: inline-flex;
+				align-items: center;
+			}
+			.node-wrapper::before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: -20px;
+				width: 20px;
+				height: 2px;
+				background-color: #c8bfa7;
+			}
+			.node {
+				display: inline-block;
+				padding: 6px 16px;
+				border-radius: 6px;
+				font-size: 0.95rem;
+				font-weight: bold;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+				transition: all 0.2s ease;
+				user-select: none;
+			}
+			/* Leaf node */
+			li > .node-wrapper > .node {
+				background-color: #ffffff;
+				border: 1px solid #c8bfa7;
+				color: #4a3319;
+			}
+			/* Branch node */
+			details > summary > .node-wrapper > .node {
+				background-color: #e6dcbe;
+				border: 1px solid #c8bfa7;
+				color: #4a3319;
+				cursor: pointer;
+			}
+			/* Root node */
+			.root-node > summary > .node-wrapper > .node {
+				background-color: #63482a;
+				color: #ffffff;
+				border-color: #4a3319;
+			}
+			.icon {
+				margin-right: 6px;
+				display: inline-block;
+				font-weight: bold;
+				width: 12px;
+			}
+			details > summary > .node-wrapper > .node .icon::before {
+				content: '+';
+			}
+			details[open] > summary > .node-wrapper > .node .icon::before {
+				content: '−';
+			}
+			.root-node > summary > .node-wrapper > .node .icon {
+				color: #ffffff;
+			}
+
+			.highlight {
+				background-color: #f1c40f !important;
+				color: #000000 !important;
+				border-color: #f39c12 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Family Tree (Shijra)</h1>
+		<p class="subtitle">
+			Click on bold names to expand / collapse branches
+		</p>
+
+		<div class="controls">
+			<input
+				id="search"
+				onkeyup="searchTree()"
+				placeholder="Search name..."
+			/>
+			<button onclick="toggleAll(true)">Expand All</button>
+			<button onclick="toggleAll(false)">Collapse All</button>
+		</div>
+
+		<div class="tree-container" id="tree-root"></div>
+
+		<script>
+			// ─────────────────────────────────────────────────────────────────
+			//  FAMILY DATA
+			//  Each person is an object: { name, children? }
+			//  children is an optional array of the same structure.
+			//  To add a person: add an object to the right children array.
+			//  To remove: delete the object.
+			//  Leaf nodes (no children) render as plain white pills.
+			//  Branch nodes (with children) render as beige expandable pills.
+			// ─────────────────────────────────────────────────────────────────
+			const familyData = {
+				name: 'Quasim Ali',
+				children: [
+					{
+						name: 'Abdullah',
+						children: [
+							{
+								name: 'Haidar Ali',
+								children: [
+									{
+										name: 'Adham Ali',
+										children: [
+											{
+												name: 'Akbar Ali',
+												children: [
+													// ── Branch 1: Sirajul-Haque ──────────────────
+													{
+														name: 'Sirajul-Haque',
+														children: [
+															{
+																name: 'Abdur Rahman',
+																children: [
+																	{
+																		name: 'Jameel Ahmad',
+																		children:
+																			[
+																				{
+																					name: 'Khurshid'
+																				},
+																				{
+																					name: 'Dulare'
+																				},
+																				{
+																					name: 'Maqbool'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Mutiur Rahaman',
+																children: [
+																	{
+																		name: 'Afaque'
+																	},
+																	{
+																		name: 'Mushtaque',
+																		children:
+																			[
+																				{
+																					name: 'Abdullah'
+																				},
+																				{
+																					name: 'Sanaullah'
+																				},
+																				{
+																					name: 'Enayatullah'
+																				},
+																				{
+																					name: 'Rezaullah'
+																				}
+																			]
+																	}
+																]
+															}
+														]
+													},
+
+													// ── Branch 2: Umar Ali ───────────────────────
+													{
+														name: 'Umar Ali',
+														children: [
+															{
+																name: 'Abdullah',
+																children: [
+																	{
+																		name: 'Ataur-Rahman',
+																		children:
+																			[
+																				{
+																					name: 'Izhar'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Ubaidullah',
+																children: [
+																	{
+																		name: 'Abdul Ahad',
+																		children:
+																			[
+																				{
+																					name: 'Ajaz',
+																					children:
+																						[
+																							{
+																								name: 'Saqlain'
+																							},
+																							{
+																								name: 'Kaunain'
+																							},
+																							{
+																								name: 'Hasnain'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Faiyaz',
+																					children:
+																						[
+																							{
+																								name: 'Dayyan'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Reyaz',
+																					children:
+																						[
+																							{
+																								name: 'Ibrahim'
+																							},
+																							{
+																								name: 'Ayan'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Imteyaz',
+																					children:
+																						[
+																							{
+																								name: 'Zaid'
+																							},
+																							{
+																								name: 'Zubaid'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Zulfiqar'
+																				},
+																				{
+																					name: 'Jawwad'
+																				},
+																				{
+																					name: 'Iqbal'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Ahmad Ali',
+																		children:
+																			[
+																				{
+																					name: 'Maqsood'
+																				},
+																				{
+																					name: 'Marghoob'
+																				},
+																				{
+																					name: 'Saheb'
+																				},
+																				{
+																					name: 'Mansoor'
+																				},
+																				{
+																					name: 'Mehboob'
+																				},
+																				{
+																					name: 'Marghoob'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Abdul Bari',
+																		children:
+																			[
+																				{
+																					name: 'Shahabuddin',
+																					children:
+																						[
+																							{
+																								name: 'Ahmad'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Zeyauddin'
+																				},
+																				{
+																					name: 'Ehteshamuddin'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Abdul Majeed'
+															}
+														]
+													},
+
+													// ── Branch 3: Nawab Ali ──────────────────────
+													{
+														name: 'Nawab Ali',
+														children: [
+															{
+																name: 'Abdur Razzaq',
+																children: [
+																	{
+																		name: 'Zafar Alam',
+																		children:
+																			[
+																				{
+																					name: 'Saeed'
+																				},
+																				{
+																					name: 'Rashid'
+																				},
+																				{
+																					name: 'Sultan'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Zaheer Alam',
+																		children:
+																			[
+																				{
+																					name: 'Tanweer'
+																				},
+																				{
+																					name: 'Tauseef'
+																				},
+																				{
+																					name: 'Tauqeer'
+																				},
+																				{
+																					name: 'Tafseer'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Badre Alam',
+																		children:
+																			[
+																				{
+																					name: 'Rizwan',
+																					children:
+																						[
+																							{
+																								name: 'Modabbir'
+																							},
+																							{
+																								name: 'Mubashir'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Hassan',
+																					children:
+																						[
+																							{
+																								name: 'Maaz'
+																							},
+																							{
+																								name: 'Muawiz'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Affan'
+																				},
+																				{
+																					name: 'Sufiyan'
+																				},
+																				{
+																					name: 'Rehan'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Abdul Ghaffar',
+																children: [
+																	{
+																		name: 'Shamshuz Zuha',
+																		children:
+																			[
+																				{
+																					name: 'Ashraf',
+																					children:
+																						[
+																							{
+																								name: 'Ibrahim'
+																							},
+																							{
+																								name: 'Ismail'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Ahsan',
+																					children:
+																						[
+																							{
+																								name: 'Rayyan'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Ehsan'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Qamraul Huda',
+																		children:
+																			[
+																				{
+																					name: 'Zeya'
+																				},
+																				{
+																					name: 'Raafe',
+																					children:
+																						[
+																							{
+																								name: 'Ramish'
+																							},
+																							{
+																								name: 'Ashir'
+																							},
+																							{
+																								name: 'Ikram'
+																							}
+																						]
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Abdul Fatah',
+																children: [
+																	{
+																		name: 'Umar Tarique',
+																		children:
+																			[
+																				{
+																					name: 'Adnan'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Umar Khalid'
+																	},
+																	{
+																		name: 'Rashid',
+																		children:
+																			[
+																				{
+																					name: 'Yaqoob'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Abdul Hameed',
+																children: [
+																	{
+																		name: 'Urooj',
+																		children:
+																			[
+																				{
+																					name: 'Sharique'
+																				},
+																				{
+																					name: 'Saim'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Iqbal',
+																		children:
+																			[
+																				{
+																					name: 'Hamid'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Aarif'
+																	}
+																]
+															},
+															{
+																name: 'Abdul Wahab',
+																children: [
+																	{
+																		name: 'Aleem',
+																		children:
+																			[
+																				{
+																					name: 'Jawed',
+																					children:
+																						[
+																							{
+																								name: 'Aquib'
+																							},
+																							{
+																								name: 'Aatif'
+																							},
+																							{
+																								name: 'Asim'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Masood',
+																					children:
+																						[
+																							{
+																								name: 'Abdullah'
+																							},
+																							{
+																								name: 'Osama'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Saud'
+																				},
+																				{
+																					name: 'Shakeel',
+																					children:
+																						[
+																							{
+																								name: 'Nabil'
+																							}
+																						]
+																				}
+																			]
+																	},
+																	{
+																		name: 'Jameel',
+																		children:
+																			[
+																				{
+																					name: 'Inayat'
+																				},
+																				{
+																					name: 'Hidayat'
+																				},
+																				{
+																					name: 'Ayat'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Mohammad',
+																		children:
+																			[
+																				{
+																					name: 'Arshad'
+																				},
+																				{
+																					name: 'Saquib'
+																				},
+																				{
+																					name: 'Kashif'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Mahmood',
+																		children:
+																			[
+																				{
+																					name: 'Yasir'
+																				},
+																				{
+																					name: 'Tahir'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Muhamid',
+																		children:
+																			[
+																				{
+																					name: 'Zulqarnain'
+																				},
+																				{
+																					name: 'Saifi'
+																				}
+																			]
+																	}
+																]
+															}
+														]
+													},
+
+													// ── Branch 4: Junaab Ali ─────────────────────
+													{
+														name: 'Junaab Ali',
+														children: [
+															{
+																name: 'Habibur Rahman',
+																children: [
+																	{
+																		name: 'Aslam',
+																		children:
+																			[
+																				{
+																					name: 'Aftab',
+																					children:
+																						[
+																							{
+																								name: 'Yasir'
+																							},
+																							{
+																								name: 'Hamid'
+																							},
+																							{
+																								name: 'Ammar'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Intekhab',
+																					children:
+																						[
+																							{
+																								name: 'Yusuf'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Mehtab',
+																					children:
+																						[
+																							{
+																								name: 'Abdullah'
+																							},
+																							{
+																								name: 'Mohammad'
+																							}
+																						]
+																				}
+																			]
+																	},
+																	{
+																		name: 'Mustafa',
+																		children:
+																			[
+																				{
+																					name: 'Tanweer',
+																					children:
+																						[
+																							{
+																								name: 'Ibrahim'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Tauqeer'
+																				},
+																				{
+																					name: 'Tauseef',
+																					children:
+																						[
+																							{
+																								name: 'Abdur Rehman'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Waqar'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Zakir',
+																		children:
+																			[
+																				{
+																					name: 'Shafquat'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Shakir',
+																		children:
+																			[
+																				{
+																					name: 'Saquib'
+																				},
+																				{
+																					name: 'Aquib'
+																				},
+																				{
+																					name: 'Rashid'
+																				},
+																				{
+																					name: 'Khalid'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Nasir',
+																		children:
+																			[
+																				{
+																					name: 'Altamash'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Qaisar',
+																		children:
+																			[
+																				{
+																					name: 'Danish'
+																				},
+																				{
+																					name: 'Tabish'
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Azizur Rahman',
+																children: [
+																	{
+																		name: 'Shakoor',
+																		children:
+																			[
+																				{
+																					name: 'Ishteyaq',
+																					children:
+																						[
+																							{
+																								name: 'Kamran'
+																							},
+																							{
+																								name: 'Furqan'
+																							},
+																							{
+																								name: 'Farhan'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Iftekhar',
+																					children:
+																						[
+																							{
+																								name: 'Saif'
+																							},
+																							{
+																								name: 'Kaif'
+																							},
+																							{
+																								name: 'Faiz'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Imteyaz',
+																					children:
+																						[
+																							{
+																								name: 'Mohammad'
+																							}
+																						]
+																				}
+																			]
+																	},
+																	{
+																		name: 'Rauf',
+																		children:
+																			[
+																				{
+																					name: 'Zahirul',
+																					children:
+																						[
+																							{
+																								name: 'Shamsher'
+																							},
+																							{
+																								name: 'Tanweer'
+																							},
+																							{
+																								name: 'Nafis'
+																							},
+																							{
+																								name: 'Rais'
+																							},
+																							{
+																								name: 'Said'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Nasirul',
+																					children:
+																						[
+																							{
+																								name: 'Haidar'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Bashir'
+																				},
+																				{
+																					name: 'Sagheer',
+																					children:
+																						[
+																							{
+																								name: 'Shahid'
+																							},
+																							{
+																								name: 'Mujahid'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Shabbir',
+																					children:
+																						[
+																							{
+																								name: 'Armaan'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Ariz',
+																					children:
+																						[
+																							{
+																								name: 'Ehtesham'
+																							},
+																							{
+																								name: 'Emad'
+																							},
+																							{
+																								name: 'Imran'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Arif',
+																					children:
+																						[
+																							{
+																								name: 'Ayaan'
+																							}
+																						]
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Haroon',
+																children: [
+																	{
+																		name: 'Sabir',
+																		children:
+																			[
+																				{
+																					name: 'Akram'
+																				},
+																				{
+																					name: 'Sanaullah'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Jabir',
+																		children:
+																			[
+																				{
+																					name: 'Wasim'
+																				},
+																				{
+																					name: 'Nasim'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Sajid',
+																		children:
+																			[
+																				{
+																					name: 'Muzakkir'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Majid',
+																		children:
+																			[
+																				{
+																					name: 'Saifullah'
+																				},
+																				{
+																					name: 'Amanullah'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Abid',
+																		children:
+																			[
+																				{
+																					name: 'Abdullah'
+																				},
+																				{
+																					name: 'Inayat'
+																				}
+																			]
+																	}
+																]
+															},
+															{ name: 'Dawood' },
+															{
+																name: 'Nurul Hasan',
+																children: [
+																	{
+																		name: 'Junaid'
+																	},
+																	{
+																		name: 'Shakeel'
+																	},
+																	{
+																		name: 'Aqeel'
+																	}
+																]
+															},
+															{
+																name: 'Ameerul Hasan',
+																children: [
+																	{
+																		name: 'Perwez',
+																		children:
+																			[
+																				{
+																					name: 'Abbad'
+																				},
+																				{
+																					name: 'Hesham'
+																				}
+																			]
+																	},
+																	{
+																		name: 'Faiyaz',
+																		children:
+																			[
+																				{
+																					name: 'Adnan'
+																				},
+																				{
+																					name: 'Wajahat'
+																				}
+																			]
+																	}
+																]
+															}
+														]
+													},
+
+													// ── Branch 2: Anwar Ali ───────────────────────
+													{
+														name: 'Anwar Ali',
+														children: [
+															{
+																name: 'Dr. Ayyub',
+																children: [
+																	{
+																		name: 'Umar Ahsan',
+																		children:
+																			[
+																				{
+																					name: 'Tanweer',
+																					children:
+																						[
+																							{
+																								name: 'Ubedah'
+																							},
+																							{
+																								name: 'Huzaifa'
+																							},
+																							{
+																								name: 'Khuzaima'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Arshi',
+																					children:
+																						[
+																							{
+																								name: 'Ammar'
+																							},
+																							{
+																								name: 'Saad'
+																							},
+																							{
+																								name: 'Qutaiba'
+																							}
+																						]
+																				}
+																			]
+																	},
+																	{
+																		name: 'Akhtar Naseh',
+																		children:
+																			[
+																				{
+																					name: 'Asif',
+																					children:
+																						[
+																							{
+																								name: 'Faisal'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Iqbal',
+																					children:
+																						[
+																							{
+																								name: 'Sharjeel'
+																							},
+																							{
+																								name: 'Raheel'
+																							},
+																							{
+																								name: 'Daniyal'
+																							},
+																							{
+																								name: 'Aseel'
+																							},
+																							{
+																								name: 'Haseel'
+																							},
+																							{
+																								name: 'Takmeel'
+																							}
+																						]
+																				},
+																				{
+																					name: 'Salman',
+																					children:
+																						[
+																							{
+																								name: 'Ghazali'
+																							},
+																							{
+																								name: 'Hejazi'
+																							},
+																							{
+																								name: 'Razi'
+																							}
+																						]
+																				}
+																			]
+																	}
+																]
+															},
+															{
+																name: 'Md Shoaib',
+																children: [
+																	{
+																		name: 'Hasan'
+																	},
+																	{
+																		name: 'Hasnain'
+																	}
+																]
+															}
+														]
+													}
+												] // end Akbar Ali children
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			};
+
+			// ─────────────────────────────────────────────────────────────────
+			//  RENDERER  —  do not edit below unless changing structure/style
+			// ─────────────────────────────────────────────────────────────────
+
+			function buildNode(person, isRoot = false) {
+				const hasChildren =
+					person.children && person.children.length > 0;
+
+				if (hasChildren) {
+					const details = document.createElement('details');
+					if (isRoot) {
+						details.open = true;
+						details.className = 'root-node';
+					}
+
+					const summary = document.createElement('summary');
+					summary.innerHTML = `<div class="node-wrapper"><span class="node"><span class="icon"></span>${person.name}</span></div>`;
+					details.appendChild(summary);
+
+					const ul = document.createElement('ul');
+					person.children.forEach((child) =>
+						ul.appendChild(buildNode(child))
+					);
+					details.appendChild(ul);
+
+					// Wrap non-root branch nodes in a list item so connector lines work
+					if (isRoot) return details;
+					const wrapper = document.createElement('li');
+					// We actually want details directly in ul for connector lines — return details directly
+					return details;
+				} else {
+					// Leaf node
+					const li = document.createElement('li');
+					li.innerHTML = `<div class="node-wrapper"><span class="node">${person.name}</span></div>`;
+					return li;
+				}
+			}
+
+			function renderTree() {
+				const root = document.getElementById('tree-root');
+				root.appendChild(buildNode(familyData, true));
+			}
+
+			function toggleAll(state) {
+				document
+					.querySelectorAll('.tree-container details')
+					.forEach((d) => (d.open = state));
+			}
+
+			function searchTree() {
+				const q = document.getElementById('search').value.toLowerCase();
+				document.querySelectorAll('.node').forEach((n) => {
+					n.classList.remove('highlight');
+					const text = n.textContent
+						.replace(/[+−]/g, '')
+						.toLowerCase();
+					if (q && text.includes(q)) {
+						n.classList.add('highlight');
+						let p = n.parentElement;
+						while (p) {
+							if (p.tagName === 'DETAILS') p.open = true;
+							p = p.parentElement;
+						}
+					}
+				});
+			}
+
+			// Boot
+			renderTree();
+		</script>
+	</body>
+</html>
