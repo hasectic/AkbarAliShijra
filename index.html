@@ -1,1286 +1,190 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>Akbar Ali Family Tree (Shijra)</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				margin: 0;
-				padding: 40px 20px;
-				background-color: #f7f4eb;
-				color: #4a3319;
-			}
-			h1 {
-				text-align: center;
-				font-size: 2.5rem;
-				margin-bottom: 5px;
-				color: #4a3319;
-			}
-			.subtitle {
-				text-align: center;
-				color: #8c765c;
-				margin-bottom: 30px;
-				font-size: 1.1rem;
-			}
-			.controls {
-				display: flex;
-				justify-content: center;
-				gap: 10px;
-				margin-bottom: 40px;
-				flex-wrap: wrap;
-			}
-			input#search {
-				padding: 10px 15px;
-				width: 300px;
-				border: 1px solid #c8bfa7;
-				border-radius: 6px;
-				background-color: #ffffff;
-				color: #4a3319;
-				font-size: 0.95rem;
-				outline: none;
-			}
-			input#search:focus {
-				border-color: #63482a;
-				box-shadow: 0 0 5px rgba(99, 72, 42, 0.2);
-			}
-			button {
-				padding: 10px 20px;
-				background-color: #63482a;
-				color: #ffffff;
-				border: none;
-				border-radius: 6px;
-				font-weight: bold;
-				cursor: pointer;
-				transition: background 0.2s;
-			}
-			button:hover {
-				background-color: #4a3319;
-			}
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Akbar Ali Family Tree (Shijra / شجرہ)</title>
+  <meta name="description" content="Family tree (Shijra) of Akbar Ali — lineage from Quasim Ali through all generations."/>
+  <meta name="keywords" content="Akbar Ali, family tree, shijra, Quasim Ali, Abdullah, Haidar Ali, Adham Ali, genealogy"/>
+  <style>
+    :root {
+      --gen0:#4a2a0a; --gen1:#7b3f00; --gen2:#9c5c00; --gen3:#b07a2e;
+      --gen4:#c4913c; --gen5:#5a7a3a; --gen6:#3a6e8c; --gen7:#5b4fa8; --gen8:#7a3560;
+      --bg:#f7f4eb; --line:#c8bfa7; --text:#3a2a10;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body{font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:30px 20px 60px;background:var(--bg);color:var(--text)}
+    h1{text-align:center;font-size:2.2rem;margin-bottom:4px;color:var(--gen0)}
+    .subtitle{text-align:center;color:#8c765c;margin-bottom:10px;font-size:1rem}
+    .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 28px;max-width:900px}
+    .legend-item{display:flex;align-items:center;gap:6px;font-size:.82rem;color:#555}
+    .legend-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+    .controls{display:flex;justify-content:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+    input#search{padding:10px 16px;width:320px;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--text);font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s}
+    input#search:focus{border-color:var(--gen2);box-shadow:0 0 6px rgba(156,92,0,.25)}
+    input#search::placeholder{color:#aaa}
+    .btn{padding:10px 20px;background:var(--gen1);color:#fff;border:none;border-radius:8px;font-weight:bold;font-size:.9rem;cursor:pointer;transition:background .2s}
+    .btn:hover{background:var(--gen0)}
+    #result-count{text-align:center;font-size:.88rem;color:#7a5a30;min-height:1.4em;margin-bottom:20px}
+    .tree-container{max-width:980px;margin:0 auto;padding-left:20px}
+    .tree-container ul{list-style:none;margin:0;padding-left:30px;position:relative}
+    .tree-container ul::before{content:'';position:absolute;top:0;left:10px;width:2px;height:100%;background:var(--line)}
+    .tree-container ul>li:last-child::after{content:'';position:absolute;top:22px;left:10px;width:2px;height:100%;background:var(--bg)}
+    .tree-container li{position:relative;margin:7px 0}
+    .tree-container details{outline:none;position:relative}
+    .tree-container summary{list-style:none;outline:none}
+    .tree-container summary::-webkit-details-marker{display:none}
+    .node-wrapper{position:relative;display:inline-flex;align-items:center}
+    .node-wrapper::before{content:'';position:absolute;top:50%;left:-20px;width:20px;height:2px;background:var(--line)}
+    .node{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:8px;font-size:.92rem;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:all .2s;user-select:none;border:1.5px solid transparent}
+    .node:hover{filter:brightness(1.07)}
+    .name-en{font-family:'Segoe UI',Arial,sans-serif;letter-spacing:.01em}
+    .name-sep{font-weight:300;font-size:.8rem;opacity:.4}
+    .name-ur{font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq',Arial,sans-serif;font-size:1rem;direction:rtl;unicode-bidi:embed}
+    .icon{margin-right:2px;font-weight:bold;width:13px;font-size:.9rem;flex-shrink:0}
+    details>summary>.node-wrapper>.node .icon::before{content:'+'}
+    details[open]>summary>.node-wrapper>.node .icon::before{content:'−'}
+    .root-node>.node-wrapper>.node .icon{display:none}
+    .node[data-gen="0"]{background:var(--gen0);color:#fff;border-color:#2e1800}
+    .node[data-gen="1"]{background:var(--gen1);color:#fff;border-color:#5c2e00}
+    .node[data-gen="2"]{background:var(--gen2);color:#fff;border-color:#7a4600}
+    .node[data-gen="3"]{background:#e8d5a0;color:#3a2010;border-color:var(--gen3)}
+    .node[data-gen="4"]{background:#f0e4be;color:#3a2010;border-color:var(--gen4)}
+    .node[data-gen="5"]{background:#d6ebcc;color:#1e3a12;border-color:var(--gen5)}
+    .node[data-gen="6"]{background:#cde4f0;color:#12304a;border-color:var(--gen6)}
+    .node[data-gen="7"]{background:#e0dbf5;color:#2a1e5a;border-color:var(--gen7)}
+    .node[data-gen="8"],.node[data-gen="9"],.node[data-gen="10"]{background:#f2d8ec;color:#4a1235;border-color:var(--gen8)}
+    li>.node-wrapper>.node[data-gen="3"]{background:#f5edd8}
+    li>.node-wrapper>.node[data-gen="4"]{background:#faf3e0}
+    li>.node-wrapper>.node[data-gen="5"]{background:#e8f5e2}
+    li>.node-wrapper>.node[data-gen="6"]{background:#dceef8}
+    li>.node-wrapper>.node[data-gen="7"]{background:#ece8f8}
+    li>.node-wrapper>.node[data-gen="8"],li>.node-wrapper>.node[data-gen="9"]{background:#f8e4f2}
+    .highlight{background:#f1c40f!important;color:#1a0a00!important;border-color:#d4a017!important;box-shadow:0 0 0 3px rgba(241,196,15,.4)!important}
+    .footer{text-align:center;margin-top:60px;padding:22px 20px;border-top:1px solid #ddd;font-size:.92rem;color:#666}
+    .footer a{display:inline-flex;align-items:center;gap:8px;color:#25d366;font-weight:bold;text-decoration:none;font-size:1rem;padding:8px 18px;border:2px solid #25d366;border-radius:30px;margin-top:10px;transition:background .2s,color .2s}
+    .footer a:hover{background:#25d366;color:#fff}
+    .footer a svg{width:20px;height:20px}
+  </style>
+</head>
+<body>
+<h1>Family Tree &nbsp;(Shijra / شجرہ)</h1>
+<p class="subtitle">Click a name to expand / collapse &nbsp;&middot;&nbsp; Search by English or Urdu name</p>
+<div class="legend" id="legend"></div>
+<div class="controls">
+  <input id="search" onkeyup="searchTree()" placeholder="Search name (English or اردو)&hellip;" autocomplete="off"/>
+  <button class="btn" onclick="toggleAll(true)">Expand All</button>
+  <button class="btn" onclick="toggleAll(false)">Collapse All</button>
+</div>
+<div id="result-count"></div>
+<div class="tree-container" id="tree-root"></div>
+<div class="footer">
+  <p>Want to <strong>add or modify</strong> a name in this family tree?</p>
+  <a href="https://wa.me/919897699028" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.845L.057 23.857a.5.5 0 0 0 .608.608l6.012-1.475A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-5.003-1.368l-.36-.213-3.724.913.93-3.613-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+    WhatsApp: +91 98976 99028
+  </a>
+</div>
+<script>
+const familyData={name:'Quasim Ali (قاسم علی)',children:[{name:'Abdullah (عبداللہ)',children:[{name:'Haidar Ali (حیدر علی)',children:[{name:'Adham Ali (ادہم علی)',children:[{name:'Akbar Ali (اکبر علی)',children:[{name:'Sirajul-Haque (سراج الحق)',children:[{name:'Abdur Rahman (عبدالرحمٰن)',children:[{name:'Jameel Ahmad (جمیل احمد)',children:[{name:'Khurshid Ahmad (خورشید)'},{name:'Dulare (دلارے)'},{name:'Maqbool Ahmad (مقبول)'}]}]},{name:'Mutiur Rahaman (مطیع الرحمن)',children:[{name:'Afaque Ahmad (آفاق)'},{name:'Mushtaque Ahmad (مشتاق)',children:[{name:'Abdullah Mushtaque (عبداللہ)'},{name:'Sanaullah Mushtaque (ثناء اللہ)'},{name:'Enayatullah Mushtaque (عنایت اللہ)'},{name:'Rezaullah Mushtaque (رضاء اللہ)'}]}]}]},{name:'Umar Ali (عمر علی)',children:[{name:'Abdullah (عبداللہ)',children:[{name:'Ataur-Rahman (عطاء الرحمن)',children:[{name:'Izhar Ahmad (اظہار)'}]}]},{name:'Ubaidullah (عبیداللہ)',children:[{name:'Abdul Ahad (عبدالاحد)',children:[{name:'Ajaz Hassan (اعجاز)',children:[{name:'Saqlain Ajaz (ثقلین)'},{name:'Kaunain Ajaz (کونین)'},{name:'Hasnain Ajaz (حسنین)'}]},{name:'Faiyaz Hassan (فیاض)',children:[{name:'Abdullah Ahad Dayyan (دیان)'}]},{name:'Reyaz Hassan (ریاض)',children:[{name:'Ibrahim (ابراہیم)'},{name:'Ayan (ایان)'}]},{name:'Imteyaz Hassan (امتیاز)',children:[{name:'Zaid (زید)'},{name:'Zubaid (زبید)'}]},{name:'Zulfiqar Hassan (ذوالفقار)'},{name:'Jawwad Hassan (جواد)'},{name:'Iqbal Hassan (اقبال)'}]},{name:'Ahmad Ali (احمد علی)',children:[{name:'Maqsood Ahmad (مقصود)'},{name:'Marghoob Ahmad (مرغوب)'},{name:'Saheb Ahmad (صاحب)'},{name:'Mansoor Ahmad (منصور)'},{name:'Mehboob Ahmad (محبوب)'}]},{name:'Abdul Bari (عبدالباری)',children:[{name:'Md Shahabuddin (شہاب الدین)',children:[{name:'Ahmad (احمد)'}]},{name:'Md Zeyauddin (ضیاء الدین)'},{name:'Md Ehteshamuddin (احتشام الدین)'}]}]},{name:'Abdul Majeed (عبدالمجید)'}]},{name:'Nawab Ali (نواب علی)',children:[{name:'Abdur Razzaq (عبدالرزاق)',children:[{name:'Zafar Alam (ظفر عالم)',children:[{name:'Saeed uz Zafar (سعید)'},{name:'Rashid uz Zafar (راشد)'},{name:'Sultan Zafar (سلطان)'}]},{name:'Zaheer Alam (ظہیر عالم)',children:[{name:'Tanweer Alam (تنویر)'},{name:'Tauseef Alam (توصیف)'},{name:'Tauqeer Alam (توقیر)'},{name:'Tafseer Alam (تفسیر)'}]},{name:'Badre Alam (بدر عالم)',children:[{name:'Rizwan Badar (رضوان)',children:[{name:'Modabbir Rizwan (مدبر)'},{name:'Mubashir Rizwan (مبشر)'}]},{name:'Hassan Badar (حسن)',children:[{name:'Maaz Rashid (معاذ)'},{name:'Muawiz Shahid (معوذ)'}]},{name:'Affan Badar (عفان)'},{name:'Sufiyan Badar (سفیان)'},{name:'Rehan Badar (ریحان)'}]}]},{name:'Abdul Ghaffar (عبدالغفار)',children:[{name:'Shamshuz Zuha (شمس الضحیٰ)',children:[{name:'Ashraf ul Huda (اشرف)',children:[{name:'Ibrahim Ashraf (ابراہیم)'},{name:'Ismail Ashraf (اسماعیل)'}]},{name:'Ahsan ul Huda (احسن)',children:[{name:'Rayyan Ahsan (ریان)'}]},{name:'Ehsan ul Huda (احسان)'}]},{name:'Qamraul Huda (قمر الہدیٰ)',children:[{name:'Zeya ul Huda (ضیاء)'},{name:'Raafe ul Huda (رافع)',children:[{name:'Ramish (رامش)'},{name:'Ashir (عاشر)'}]},{name:'Ikram ul Huda (اکرام)'}]}]},{name:'Abdul Fatah (عبدالفتاح)',children:[{name:'Umar Tarique (عمر طارق)',children:[{name:'Adnan (عدنان)'}]},{name:'Umar Khalid (عمر خالد)'},{name:'Umar Rashid (راشد)',children:[{name:'Yaqoob Umar (یعقوب)'}]}]},{name:'Abdul Hameed (عبدالحمید)',children:[{name:'Urooj Hamidi (عروج)',children:[{name:'Sharique Urooj (شارق)'},{name:'Saim Urooj (صائم)'}]},{name:'Iqbal Hamidi (اقبال)',children:[{name:'Hamid (حامد)'}]},{name:'Md Aarif (عارف)'}]},{name:'Abdul Wahab (عبدالوہاب)',children:[{name:'Aleem Akhtar (علیم)',children:[{name:'Jawed Akhtar (جاوید)',children:[{name:'Aquib Jawed (عاقب)'},{name:'Aatif Jawed (عاطف)'},{name:'Asim Jawed (عاصم)'}]},{name:'Masood Akhtar (مسعود)',children:[{name:'Abdullah Masood (عبداللہ)'},{name:'Osama Masood (اسامہ)'}]},{name:'Saud Akhtar (سعود)'},{name:'Shakeel Akhtar (شکیل)',children:[{name:'Nabil Akhtar (نبيل)'}]}]},{name:'Jameel Akhtar (جمیل)',children:[{name:'Inayatullah (عنایت)'},{name:'Hidayatullah (ہدایت)'},{name:'Ayatullah (آیت)'}]},{name:'Mohammad Alam (محمد)',children:[{name:'Arshad Wahab (ارشد)'},{name:'Saquib (ثاقب)'},{name:'Kashif (کاشف)'}]},{name:'Mahmood Alam (محمود)',children:[{name:'Yasir Mahmood (یاسر)'},{name:'Tahir Mahmood (طاہر)'}]},{name:'Muhamid Alam (محامد)',children:[{name:'Zulqarnain (ذوالقرنین)'},{name:'Saifi (سیفی)'}]}]}]},{name:'Junaab Ali (جناب علی)',children:[{name:'Habibur Rahman (حبیب الرحمن)',children:[{name:'Aslam Rahmani (اسلم)',children:[{name:'Aftab Ahmad (آفتاب)',children:[{name:'Yasir Aftab (یاسر)'},{name:'Hamid Aftab (حامد)'},{name:'Ammar Aftab (عمار)'}]},{name:'Intekhab Ahmad (انتخاب)',children:[{name:'Yusuf Intekhab (یوسف)'}]},{name:'Mehtab Ahmad (مہتاب)',children:[{name:'Abdullah (عبداللہ)'},{name:'Mohammad (محمد)'}]}]},{name:'Md Mustafa (مصطفیٰ)',children:[{name:'Tanweer Mustafa (تنویر)',children:[{name:'Md Ibrahim (ابراہیم)'}]},{name:'Tauqeer Mustafa (توقیر)'},{name:'Tauseef Mustafa (توصیف)',children:[{name:'Abdur Rehman (عبدالرحمن)'}]},{name:'Waqar Mustafa (وقار)'}]},{name:'Zakir Hussain (ذاکر)',children:[{name:'Shafquat Rana (شفقت)'}]},{name:'Shakir Hussain (شاکر)',children:[{name:'Saquib (ثاقب)'},{name:'Aquib (عاقب)'},{name:'Rashid (راشد)'},{name:'Khalid (خالد)'}]},{name:'Nasir Hussain (ناصر)',children:[{name:'Altamash Nasir (التتمش)'}]},{name:'Qaisar Hussain (قیصر)',children:[{name:'Danish (دانش)'},{name:'Tabish (تابش)'}]}]},{name:'Azizur Rahman (عزیز الرحمن)',children:[{name:'Abdul Shakoor (شکور)',children:[{name:'Ishteyaq Ahmad (اشتیاق)',children:[{name:'Kamran Ahmad (کامران)'},{name:'Furqan Ahmad (فرقان)'},{name:'Farhan Ahmad (فرحان)'}]},{name:'Iftekhar Ahmad (افتخار)',children:[{name:'Saif Ahmad (سیف)'},{name:'Kaif Ahmad (کیف)'},{name:'Faiz Ahmad (فیض)'}]},{name:'Imteyaz Ahmad (امتیاز)',children:[{name:'Mohammad (محمد)'}]}]},{name:'Abdur Rauf (رؤف)',children:[{name:'Zahirul Haque (ظہیرال)',children:[{name:'Md Shamsher (شمشیر)'},{name:'Md Tanweer (تنویر)'},{name:'Md Nafis (نفیس)'},{name:'Md Rais (رئیس)'},{name:'Md Said (سعید)'}]},{name:'Nasirul Haque (ناصرال)',children:[{name:'Irfan Haidar (حیدر)'}]},{name:'Md Bashir (بشیر)'},{name:'Md Sagheer (صغیر)',children:[{name:'Md Shahid (شاہد)'},{name:'Md Mujahid (مجاھد)'}]},{name:'Md Shabbir (شبیر)',children:[{name:'Md Armaan (ارمان)'}]},{name:'Md Ariz (عارض)',children:[{name:'Md Ehtesham (احتشام)'},{name:'Md Emad (عماد)'},{name:'Md Imran (عمران)'}]},{name:'Md Arif (عارف)',children:[{name:'Md Ayaan (ایان)'}]}]}]},{name:'Md Haroon (ہارون)',children:[{name:'Sabir Hussain (صابر)',children:[{name:'Akramullah (اکرم)'},{name:'Sanaullah Sabri (ثناء اللہ)'}]},{name:'Jabir Hussain (جابر)',children:[{name:'Wasim Akram (وسیم)',children:[{name:'Arham Wasim (ارحم)'}]},{name:'Nasim Akram (نسیم)'}]},{name:'Sajid Hussain (ساجد)',children:[{name:'Muzakkir Shahab (مذکر)'}]},{name:'Adbul Majid (ماجد)',children:[{name:'Saifullah Saifi (سیف اللہ)',children:[{name:'Mugheerah Majid (مغیرہ)'},{name:'Musab Majid (مصعب)'}]},{name:'Amanullah (امان اللہ)'}]},{name:'Abid Hussain (عابد)',children:[{name:'Abdullah Abid (عبداللہ)'},{name:'Inayatullah (عنایت)'}]}]},{name:'Md Dawood (داؤد)'},{name:'Nurul Hasan (نور الحسن)',children:[{name:'Junaid Ahmad (جنید)'},{name:'Shakeel Ahmad (شکیل)'},{name:'Aqueel Ahmad (عقیل)'}]},{name:'Ameerul Hasan (امیر الحسن)',children:[{name:'Faiyaz Ahmad (فیاض)',children:[{name:'Waliullah Adnan (عدنان)'},{name:'Wajahatullah Rehan (وجاہت)'}]},{name:'Perwez Ahmad (پرویز)',children:[{name:'Abbad Ahmad (عباد)'},{name:'Hisham Ahmad (ہشام)'}]}]}]},{name:'Anwar Ali (انور علی)',children:[{name:'Md Ayyub (ایوب)',children:[{name:'Umar Ahsan (عمر احسن)',children:[{name:'Tanweer Ahsan (تنویر)',children:[{name:'Ubedah Ahsan (عبیدہ)'},{name:'Huzaifa Ahsan (حذیفہ)'},{name:'Khuzaima Ahsan (خزیمہ)'}]},{name:'Zeya Arshi (عرشی)',children:[{name:'Ammar Ahsan (عمار)'},{name:'Saad Ahsan (سعد)'},{name:'Qutaiba Ahsan (قتیبہ)'}]}]},{name:'Akhtar Naseh (اختر ناصح)',children:[{name:'Md Asif (آصف)',children:[{name:'Faisal (فیصل)'}]},{name:'Iqbal Akhtar (اقبال)',children:[{name:'Sharjeel Iqbal (شرجیل)'},{name:'Raheel Iqbal (راحیل)'},{name:'Daniyal Iqbal (دانیال)'},{name:'Aseel Iqbal (اصیل)'},{name:'Haseel Iqbal (حصیل)'},{name:'Takmeel Iqbal (تکمیل)'}]},{name:'Salman Akhtar (سلمان)',children:[{name:'Adeel Ghazali (غزالی)'},{name:'Nabeel Hejazi (حجازی)'},{name:'Razi (رازی)'}]}]}]},{name:'Md Shoaib (محمد شعیب)',children:[{name:'Hasan (حسن)'},{name:'Hasnain (حسنین)'}]}]}]}]}]}]}]};
 
-			.tree-container {
-				max-width: 960px;
-				margin: 0 auto;
-				padding-left: 20px;
-			}
-			.tree-container ul {
-				list-style-type: none;
-				margin: 0;
-				padding-left: 30px;
-				position: relative;
-			}
-			.tree-container details {
-				outline: none;
-				position: relative;
-			}
-			.tree-container summary {
-				list-style: none;
-				outline: none;
-			}
-			.tree-container summary::-webkit-details-marker {
-				display: none;
-			}
+const GEN_LABELS=[
+  {gen:0,label:'Gen 1 – Quasim Ali',color:'#4a2a0a'},
+  {gen:1,label:'Gen 2 – Abdullah',color:'#7b3f00'},
+  {gen:2,label:'Gen 3 – Haidar Ali',color:'#9c5c00'},
+  {gen:3,label:'Gen 4 – Adham Ali',color:'#b07a2e'},
+  {gen:4,label:'Gen 5 – Akbar Ali',color:'#c4913c'},
+  {gen:5,label:'Gen 6',color:'#5a7a3a'},
+  {gen:6,label:'Gen 7',color:'#3a6e8c'},
+  {gen:7,label:'Gen 8',color:'#5b4fa8'},
+  {gen:8,label:'Gen 9+',color:'#7a3560'}
+];
 
-			.tree-container ul::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 10px;
-				width: 2px;
-				height: 100%;
-				background-color: #c8bfa7;
-			}
-			.tree-container ul > li:last-child::after {
-				content: '';
-				position: absolute;
-				top: 22px;
-				left: 10px;
-				width: 2px;
-				height: 100%;
-				background-color: #f7f4eb;
-			}
-			.tree-container li {
-				position: relative;
-				margin: 8px 0;
-			}
-			.node-wrapper {
-				position: relative;
-				display: inline-flex;
-				align-items: center;
-			}
-			.node-wrapper::before {
-				content: '';
-				position: absolute;
-				top: 50%;
-				left: -20px;
-				width: 20px;
-				height: 2px;
-				background-color: #c8bfa7;
-			}
-			.node {
-				display: inline-block;
-				padding: 6px 16px;
-				border-radius: 6px;
-				font-size: 0.95rem;
-				font-weight: bold;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-				transition: all 0.2s ease;
-				user-select: none;
-			}
-			/* Leaf node */
-			li > .node-wrapper > .node {
-				background-color: #ffffff;
-				border: 1px solid #c8bfa7;
-				color: #4a3319;
-			}
-			/* Branch node */
-			details > summary > .node-wrapper > .node {
-				background-color: #e6dcbe;
-				border: 1px solid #c8bfa7;
-				color: #4a3319;
-				cursor: pointer;
-			}
-			/* Root node */
-			.root-node > .node-wrapper > .node {
-				background-color: #63482a;
-				color: #ffffff;
-				border-color: #4a3319;
-			}
-			.icon {
-				margin-right: 6px;
-				display: inline-block;
-				font-weight: bold;
-				width: 12px;
-			}
-			details > summary > .node-wrapper > .node .icon::before {
-				content: '+';
-			}
-			details[open] > summary > .node-wrapper > .node .icon::before {
-				content: '−';
-			}
-			.root-node > .node-wrapper > .node .icon {
-				display: none;
-			}
+function buildLegend(){
+  const el=document.getElementById('legend');
+  GEN_LABELS.forEach(function(g){
+    var d=document.createElement('div');
+    d.className='legend-item';
+    d.innerHTML='<span class="legend-dot" style="background:'+g.color+'"></span><span>'+g.label+'</span>';
+    el.appendChild(d);
+  });
+}
 
-			.highlight {
-				background-color: #f1c40f !important;
-				color: #000000 !important;
-				border-color: #f39c12 !important;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>Family Tree (Shijra / شجرہ)</h1>
-		<p class="subtitle">
-			Click on bold names to expand / collapse branches
-		</p>
+function parseName(full){
+  var m=full.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+  if(m) return {en:m[1].trim(),ur:m[2].trim()};
+  if(/^[\u0600-\u06FF\s]+$/.test(full.trim())) return {en:'',ur:full.trim()};
+  return {en:full.trim(),ur:''};
+}
 
-		<div class="controls">
-			<input
-				id="search"
-				onkeyup="searchTree()"
-				placeholder="Search name..."
-			/>
-			<button onclick="toggleAll(true)">Expand All</button>
-			<button onclick="toggleAll(false)">Collapse All</button>
-		</div>
+function nameHTML(full){
+  var p=parseName(full),en=p.en,ur=p.ur;
+  if(en&&ur) return '<span class="name-en">'+en+'</span><span class="name-sep"> | </span><span class="name-ur">'+ur+'</span>';
+  if(ur) return '<span class="name-ur">'+ur+'</span>';
+  return '<span class="name-en">'+en+'</span>';
+}
 
-		<div class="tree-container" id="tree-root"></div>
+function buildNode(person,depth,isRoot){
+  depth=depth||0; isRoot=isRoot||false;
+  var hasChildren=person.children&&person.children.length>0;
+  var g=Math.min(depth,9);
+  if(isRoot){
+    var li=document.createElement('li');
+    li.className='root-node';
+    li.innerHTML='<div class="node-wrapper"><span class="node" data-gen="'+g+'">'+nameHTML(person.name)+'</span></div>';
+    var ul=document.createElement('ul');
+    person.children.forEach(function(c){ul.appendChild(buildNode(c,depth+1));});
+    li.appendChild(ul);
+    return li;
+  }
+  if(hasChildren){
+    var li=document.createElement('li');
+    var details=document.createElement('details');
+    var summary=document.createElement('summary');
+    summary.innerHTML='<div class="node-wrapper"><span class="node" data-gen="'+g+'"><span class="icon"></span>'+nameHTML(person.name)+'</span></div>';
+    details.appendChild(summary);
+    var ul=document.createElement('ul');
+    person.children.forEach(function(c){ul.appendChild(buildNode(c,depth+1));});
+    details.appendChild(ul);
+    li.appendChild(details);
+    return li;
+  }
+  var li=document.createElement('li');
+  li.innerHTML='<div class="node-wrapper"><span class="node" data-gen="'+g+'">'+nameHTML(person.name)+'</span></div>';
+  return li;
+}
 
-		<script>
-			const familyData = {
-				name: 'Quasim Ali (قاسم علی)',
-				children: [
-					{
-						name: 'Abdullah (عبداللہ)',
-						children: [
-							{
-								name: 'Haidar Ali (حیدر علی)',
-								children: [
-									{
-										name: 'Adham Ali (ادہم علی)',
-										children: [
-											{
-												name: 'Akbar Ali (اکبر علی)',
-												children: [
-													// ── Branch 1: Sirajul-Haque ──────────────────
-													{
-														name: 'Sirajul-Haque (سراج الحق)',
-														children: [
-															{
-																name: 'Abdur Rahman (عبدالرحمٰن)',
-																children: [
-																	{
-																		name: 'Jameel Ahmad (جمیل احمد)',
-																		children:
-																			[
-																				{
-																					name: 'Khurshid Ahmad(خورشید)'
-																				},
-																				{
-																					name: 'Dulare (دلارے)'
-																				},
-																				{
-																					name: 'Maqbool Ahmad(مقبول)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Mutiur Rahaman (مطیع الرحمن)',
-																children: [
-																	{
-																		name: 'Afaque Ahmad(آفاق)'
-																	},
-																	{
-																		name: 'Mushtaque Ahmad(مشتاق)',
-																		children:
-																			[
-																				{
-																					name: 'Abdullah Mushtaque(عبداللہ)'
-																				},
-																				{
-																					name: 'Sanaullah Mushtaque(ثناء اللہ)'
-																				},
-																				{
-																					name: 'Enayatullah Mushtaque(عنایت اللہ)'
-																				},
-																				{
-																					name: 'Rezaullah Mushtaque(رضاء اللہ)'
-																				}
-																			]
-																	}
-																]
-															}
-														]
-													},
+function renderTree(){
+  var root=document.getElementById('tree-root');
+  var ul=document.createElement('ul');
+  ul.appendChild(buildNode(familyData,0,true));
+  root.appendChild(ul);
+}
 
-													// ── Branch 2: Umar Ali ───────────────────────
-													{
-														name: 'Umar Ali (عمر علی)',
-														children: [
-															{
-																name: 'Abdullah (عبداللہ)',
-																children: [
-																	{
-																		name: 'Ataur-Rahman (عطاء الرحمن)',
-																		children:
-																			[
-																				{
-																					name: 'Izhar Ahmad (اظہار)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Ubaidullah (عبیداللہ)',
-																children: [
-																	{
-																		name: 'Abdul Ahad (عبدالاحد)',
-																		children:
-																			[
-																				{
-																					name: 'Ajaz Hassan(اعجاز)',
-																					children:
-																						[
-																							{
-																								name: 'Saqlain Ajaz(ثقلین)'
-																							},
-																							{
-																								name: 'Kaunain Ajaz(کونین)'
-																							},
-																							{
-																								name: 'Hasnain Ajaz(حسنین)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Faiyaz Hassan(فیاض)',
-																					children:
-																						[
-																							{
-																								name: 'Abdullah Ahad Dayyan (دیان)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Reyaz Hassan(ریاض)',
-																					children:
-																						[
-																							{
-																								name: 'Ibrahim (ابراہیم)'
-																							},
-																							{
-																								name: 'Ayan (ایان)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Imteyaz Hassan(امتیاز)',
-																					children:
-																						[
-																							{
-																								name: 'Zaid (زید)'
-																							},
-																							{
-																								name: 'Zubaid (زبید)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Zulfiqar Hassan(ذوالفقار)'
-																				},
-																				{
-																					name: 'Jawwad Hassan(جواد)'
-																				},
-																				{
-																					name: 'Iqbal Hassan(اقبال)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Ahmad Ali (احمد علی)',
-																		children:
-																			[
-																				{
-																					name: 'Maqsood Ahmad(مقصود)'
-																				},
-																				{
-																					name: 'Marghoob Ahmad(مرغوب)'
-																				},
-																				{
-																					name: 'Saheb Ahmad(صاحب)'
-																				},
-																				{
-																					name: 'Mansoor Ahmad(منصور)'
-																				},
-																				{
-																					name: 'Mehboob Ahmad(محبوب)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Abdul Bari (عبدالباری)',
-																		children:
-																			[
-																				{
-																					name: 'Md Shahabuddin (شہاب الدین)',
-																					children:
-																						[
-																							{
-																								name: 'Ahmad (احمد)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Md Zeyauddin (ضیاء الدین)'
-																				},
-																				{
-																					name: 'Md Ehteshamuddin (احتشام الدین)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Abdul Majeed (عبدالمجید)'
-															}
-														]
-													},
+function toggleAll(state){
+  document.querySelectorAll('.tree-container details').forEach(function(d){d.open=state;});
+}
 
-													// ── Branch 3: Nawab Ali ──────────────────────
-													{
-														name: 'Nawab Ali (نواب علی)',
-														children: [
-															{
-																name: 'Abdur Razzaq (عبدالرزاق)',
-																children: [
-																	{
-																		name: 'Zafar Alam (ظفر عالم)',
-																		children:
-																			[
-																				{
-																					name: 'Saeed uz Zafar (سعید)'
-																				},
-																				{
-																					name: 'Rashid uz Zafar(راشد)'
-																				},
-																				{
-																					name: 'Sultan Zafar(سلطان)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Zaheer Alam (ظہیر عالم)',
-																		children:
-																			[
-																				{
-																					name: 'Tanweer Alam(تنویر)'
-																				},
-																				{
-																					name: 'Tauseef Alam(توصیف)'
-																				},
-																				{
-																					name: 'Tauqeer Alam(توقیر)'
-																				},
-																				{
-																					name: 'Tafseer Alam(تفسیر)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Badre Alam (بدر عالم)',
-																		children:
-																			[
-																				{
-																					name: 'Rizwan Badar(رضوان)',
-																					children:
-																						[
-																							{
-																								name: 'Modabbir Rizwan(مدبر)'
-																							},
-																							{
-																								name: 'Mubashir Rizwan(مبشر)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Hassan Badar(حسن)',
-																					children:
-																						[
-																							{
-																								name: 'Maaz Rashid(معاذ)'
-																							},
-																							{
-																								name: 'Muawiz Shahid(معوذ)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Affan Badar(عفان)'
-																				},
-																				{
-																					name: 'Sufiyan Badar(سفیان)'
-																				},
-																				{
-																					name: 'Rehan Badar(ریحان)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Abdul Ghaffar (عبدالغفار)',
-																children: [
-																	{
-																		name: 'Shamshuz Zuha (شمس الضحیٰ)',
-																		children:
-																			[
-																				{
-																					name: 'Ashraf ul Huda(اشرف)',
-																					children:
-																						[
-																							{
-																								name: 'Ibrahim Ashraf(ابراہیم)'
-																							},
-																							{
-																								name: 'Ismail Ashraf(اسماعیل)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Ahsan ul Huda(احسن)',
-																					children:
-																						[
-																							{
-																								name: 'Rayyan Ahsan(ریان)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Ehsan ul Huda(احسان)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Qamraul Huda (قمر الہدیٰ)',
-																		children:
-																			[
-																				{
-																					name: 'Zeya ul Huda(ضیاء)'
-																				},
-																				{
-																					name: 'Raafe ul Huda(رافع)',
-																					children:
-																						[
-																							{
-																								name: 'Ramish (رامش)'
-																							},
-																							{
-																								name: 'Ashir (عاشر)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Ikram ul Huda(اکرام)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Abdul Fatah (عبدالفتاح)',
-																children: [
-																	{
-																		name: 'Umar Tarique (عمر طارق)',
-																		children:
-																			[
-																				{
-																					name: 'Adnan (عدنان)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Umar Khalid (عمر خالد)'
-																	},
-																	{
-																		name: 'Umar Rashid (راشد)',
-																		children:
-																			[
-																				{
-																					name: 'Yaqoob Umar(یعقوب)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Abdul Hameed (عبدالحمید)',
-																children: [
-																	{
-																		name: 'Urooj Hamidi(عروج)',
-																		children:
-																			[
-																				{
-																					name: 'Sharique Urooj(شارق)'
-																				},
-																				{
-																					name: 'Saim Urooj(صائم)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Iqbal Hamidi(اقبال)',
-																		children:
-																			[
-																				{
-																					name: 'Hamid (حامد)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Md Aarif (عارف)'
-																	}
-																]
-															},
-															{
-																name: 'Abdul Wahab (عبدالوہاب)',
-																children: [
-																	{
-																		name: 'Aleem Akhtar(علیم)',
-																		children:
-																			[
-																				{
-																					name: 'Jawed Akhtar(جاوید)',
-																					children:
-																						[
-																							{
-																								name: 'Aquib Jawed(عاقب)'
-																							},
-																							{
-																								name: 'Aatif Jawed(عاطف)'
-																							},
-																							{
-																								name: 'Asim Jawed(عاصم)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Masood Akhtar(مسعود)',
-																					children:
-																						[
-																							{
-																								name: 'Abdullah Masood(عبداللہ)'
-																							},
-																							{
-																								name: 'Osama Masood(اسامہ)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Saud Akhtar(سعود)'
-																				},
-																				{
-																					name: 'Shakeel Akhtar(شکیل)',
-																					children:
-																						[
-																							{
-																								name: 'Nabil Akhtar(نبيل)'
-																							}
-																						]
-																				}
-																			]
-																	},
-																	{
-																		name: 'Jameel Akhtar(جمیل)',
-																		children:
-																			[
-																				{
-																					name: 'Inayatullah (عنایت)'
-																				},
-																				{
-																					name: 'Hidayatullah  (ہدایت)'
-																				},
-																				{
-																					name: 'Ayatullah  (آیت)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Mohammad Alam(محمد)',
-																		children:
-																			[
-																				{
-																					name: 'Arshad Wahab(ارشد)'
-																				},
-																				{
-																					name: 'Saquib (ثاقب)'
-																				},
-																				{
-																					name: 'Kashif (کاشف)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Mahmood Alam(محمود)',
-																		children:
-																			[
-																				{
-																					name: 'Yasir Mahmood (یاسر)'
-																				},
-																				{
-																					name: 'Tahir Mahmood (طاہر)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Muhamid Alam(محامد)',
-																		children:
-																			[
-																				{
-																					name: 'Zulqarnain (ذوالقرنین)'
-																				},
-																				{
-																					name: 'Saifi (سیفی)'
-																				}
-																			]
-																	}
-																]
-															}
-														]
-													},
+function searchTree(){
+  var q=document.getElementById('search').value.trim().toLowerCase();
+  var count=0;
+  document.querySelectorAll('.node').forEach(function(n){
+    n.classList.remove('highlight');
+    if(!q) return;
+    var text=n.textContent.replace(/[+\u2212|]/g,'').trim().toLowerCase();
+    if(text.indexOf(q)!==-1){
+      n.classList.add('highlight');
+      count++;
+      var p=n.parentElement;
+      while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
+    }
+  });
+  var rc=document.getElementById('result-count');
+  rc.textContent=q?(count===0?'No matches found.':count+' match'+(count>1?'es':'')+' found'):'';
+}
 
-													// ── Branch 4: Junaab Ali ─────────────────────
-													{
-														name: 'Junaab Ali (جناب علی)',
-														children: [
-															{
-																name: 'Habibur Rahman (حبیب الرحمن)',
-																children: [
-																	{
-																		name: 'Aslam Rahmani(اسلم)',
-																		children:
-																			[
-																				{
-																					name: 'Aftab Ahmad(آفتاب)',
-																					children:
-																						[
-																							{
-																								name: 'Yasir Aftab(یاسر)'
-																							},
-																							{
-																								name: 'Hamid Aftab(حامد)'
-																							},
-																							{
-																								name: 'Ammar Aftab(عمار)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Intekhab Ahmad(انتخاب)',
-																					children:
-																						[
-																							{
-																								name: 'Yusuf Intekhab(یوسف)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Mehtab Ahmad(مہتاب)',
-																					children:
-																						[
-																							{
-																								name: 'Abdullah(عبداللہ)'
-																							},
-																							{
-																								name: 'Mohammad (محمد)'
-																							}
-																						]
-																				}
-																			]
-																	},
-																	{
-																		name: 'Md Mustafa (مصطفیٰ)',
-																		children:
-																			[
-																				{
-																					name: 'Tanweer Mustafa(تنویر)',
-																					children:
-																						[
-																							{
-																								name: 'Md Ibrahim (ابراہیم)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Tauqeer Mustafa(توقیر)'
-																				},
-																				{
-																					name: 'Tauseef Mustafa(توصیف)',
-																					children:
-																						[
-																							{
-																								name: 'Abdur Rehman (عبدالرحمن)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Waqar Mustafa(وقار)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Zakir Hussain(ذاکر)',
-																		children:
-																			[
-																				{
-																					name: 'Shafquat Rana(شفقت)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Shakir Hussain(شاکر)',
-																		children:
-																			[
-																				{
-																					name: 'Saquib (ثاقب)'
-																				},
-																				{
-																					name: 'Aquib (عاقب)'
-																				},
-																				{
-																					name: 'Rashid (راشد)'
-																				},
-																				{
-																					name: 'Khalid (خالد)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Nasir Hussain(ناصر)',
-																		children:
-																			[
-																				{
-																					name: 'Altamash Nasir(التتمش)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Qaisar Hussain(قیصر)',
-																		children:
-																			[
-																				{
-																					name: 'Danish (دانش)'
-																				},
-																				{
-																					name: 'Tabish (تابش)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Azizur Rahman (عزیز الرحمن)',
-																children: [
-																	{
-																		name: 'Abdul Shakoor (شکور)',
-																		children:
-																			[
-																				{
-																					name: 'Ishteyaq Ahmad(اشتیاق)',
-																					children:
-																						[
-																							{
-																								name: 'Kamran Ahmad(کامران)'
-																							},
-																							{
-																								name: 'Furqan Ahmad(فرقان)'
-																							},
-																							{
-																								name: 'Farhan Ahmad(فرحان)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Iftekhar Ahmad(افتخار)',
-																					children:
-																						[
-																							{
-																								name: 'Saif Ahmad(سیف)'
-																							},
-																							{
-																								name: 'Kaif Ahmad(کیف)'
-																							},
-																							{
-																								name: 'Faiz Ahmad(فیض)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Imteyaz Ahmad(امتیاز)',
-																					children:
-																						[
-																							{
-																								name: 'Mohammad (محمد)'
-																							}
-																						]
-																				}
-																			]
-																	},
-																	{
-																		name: 'Abdur Rauf (رؤف)',
-																		children:
-																			[
-																				{
-																					name: 'Zahirul Haque(ظہیرال)',
-																					children:
-																						[
-																							{
-																								name: 'Md Shamsher (شمشیر)'
-																							},
-																							{
-																								name: 'Md Tanweer (تنویر)'
-																							},
-																							{
-																								name: 'Md Nafis (نفیس)'
-																							},
-																							{
-																								name: 'Md Rais (رئیس)'
-																							},
-																							{
-																								name: 'Md Said (سعید)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Nasirul Haque(ناصرال)',
-																					children:
-																						[
-																							{
-																								name: 'Irfan Haidar (حیدر)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Md Bashir (بشیر)'
-																				},
-																				{
-																					name: 'Md Sagheer (صغیر)',
-																					children:
-																						[
-																							{
-																								name: 'Md Shahid (شاہد)'
-																							},
-																							{
-																								name: 'Md Mujahid (مجاھد)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Md Shabbir (شبیر)',
-																					children:
-																						[
-																							{
-																								name: 'Md Armaan (ارمان)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Md Ariz (عارض)',
-																					children:
-																						[
-																							{
-																								name: 'Md Ehtesham (احتشام)'
-																							},
-																							{
-																								name: 'Md Emad (عماد)'
-																							},
-																							{
-																								name: 'Md Imran (عمران)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Md Arif (عارف)',
-																					children:
-																						[
-																							{
-																								name: 'Md Ayaan (ایان)'
-																							}
-																						]
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Md Haroon (ہارون)',
-																children: [
-																	{
-																		name: 'Sabir Hussain (صابر)',
-																		children:
-																			[
-																				{
-																					name: 'Akramullah  (اکرم)'
-																				},
-																				{
-																					name: 'Sanaullah Sabri(ثناء اللہ)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Jabir Hussain(جابر)',
-																		children:
-																			[
-																				{
-																					name: 'Wasim Akram(وسیم)',
-																					children:
-																						[
-																							{
-																								name: 'Arham Wasim(ارحم)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Nasim Akram(نسیم)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Sajid Hussain(ساجد)',
-																		children:
-																			[
-																				{
-																					name: 'Muzakkir Shahab(مذکر)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Adbul Majid (ماجد)',
-																		children:
-																			[
-																				{
-																					name: 'Saifullah Saifi(سیف اللہ)',
-																					children:
-																						[
-																							{
-																								name: 'Mugheerah Majid(مغیرہ)'
-																							},
-																							{
-																								name: 'Musab Majid(مصعب)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Amanullah (امان اللہ)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Abid Hussain(عابد)',
-																		children:
-																			[
-																				{
-																					name: 'Abdullah Abid(عبداللہ)'
-																				},
-																				{
-																					name: 'Inayatullah (عنایت)'
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Md Dawood (داؤد)'
-															},
-															{
-																name: 'Nurul Hasan (نور الحسن)',
-																children: [
-																	{
-																		name: 'Junaid Ahmad(جنید)'
-																	},
-																	{
-																		name: 'Shakeel Ahmad(شکیل)'
-																	},
-																	{
-																		name: 'Aqueel Ahmad(عقیل)'
-																	}
-																]
-															},
-															{
-																name: 'Ameerul Hasan (امیر الحسن)',
-																children: [
-																	{
-																		name: 'Faiyaz Ahmad(فیاض)',
-																		children:
-																			[
-																				{
-																					name: 'Waliullah Adnan (عدنان)'
-																				},
-																				{
-																					name: 'Wajahatullah Rehan (وجاہت)'
-																				}
-																			]
-																	},
-																	{
-																		name: 'Perwez Ahmad(پرویز)',
-																		children:
-																			[
-																				{
-																					name: 'Abbad Ahmad(عباد)'
-																				},
-																				{
-																					name: 'Hisham Ahmad(ہشام)'
-																				}
-																			]
-																	}
-																]
-															}
-														]
-													},
-
-													// ── Branch 5: Anwar Ali ───────────────────────
-													{
-														name: 'Anwar Ali (انور علی)',
-														children: [
-															{
-																name: 'Md Ayyub (ایوب)',
-																children: [
-																	{
-																		name: 'Umar Ahsan (عمر احسن)',
-																		children:
-																			[
-																				{
-																					name: 'Tanweer Ahsan(تنویر)',
-																					children:
-																						[
-																							{
-																								name: 'Ubedah Ahsan(عبیدہ)'
-																							},
-																							{
-																								name: 'Huzaifa Ahsan(حذیفہ)'
-																							},
-																							{
-																								name: 'Khuzaima Ahsan(خزیمہ)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Zeya Arshi (عرشی)',
-																					children:
-																						[
-																							{
-																								name: 'Ammar Ahsan(عمار)'
-																							},
-																							{
-																								name: 'Saad Ahsan(سعد)'
-																							},
-																							{
-																								name: 'Qutaiba Ahsan(قتیبہ)'
-																							}
-																						]
-																				}
-																			]
-																	},
-																	{
-																		name: 'Akhtar Naseh (اختر ناصح)',
-																		children:
-																			[
-																				{
-																					name: 'Md Asif (آصف)',
-																					children:
-																						[
-																							{
-																								name: 'Faisal (فیصل)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Iqbal Akhtar(اقبال)',
-																					children:
-																						[
-																							{
-																								name: 'Sharjeel Iqbal(شرجیل)'
-																							},
-																							{
-																								name: 'Raheel Iqbal(راحیل)'
-																							},
-																							{
-																								name: 'Daniyal Iqbal(دانیال)'
-																							},
-																							{
-																								name: 'Aseel Iqbal(اصیل)'
-																							},
-																							{
-																								name: 'Haseel Iqbal(حصیل)'
-																							},
-																							{
-																								name: 'Takmeel Iqbal(تکمیل)'
-																							}
-																						]
-																				},
-																				{
-																					name: 'Salman Akhtar(سلمان)',
-																					children:
-																						[
-																							{
-																								name: 'Adeel Ghazali (غزالی)'
-																							},
-																							{
-																								name: 'Nabeel Hejazi (حجازی)'
-																							},
-																							{
-																								name: 'Razi (رازی)'
-																							}
-																						]
-																				}
-																			]
-																	}
-																]
-															},
-															{
-																name: 'Md Shoaib (محمد شعیب)',
-																children: [
-																	{
-																		name: 'Hasan (حسن)'
-																	},
-																	{
-																		name: 'Hasnain (حسنین)'
-																	}
-																]
-															}
-														]
-													}
-												] // end Akbar Ali children
-											}
-										]
-									}
-								]
-							}
-						]
-					}
-				]
-			};
-
-			// ─────────────────────────────────────────────────────────────────
-			//  RENDERER
-			// ─────────────────────────────────────────────────────────────────
-			function buildNode(person, isRoot = false) {
-				const hasChildren =
-					person.children && person.children.length > 0;
-
-				if (hasChildren) {
-					// Create list element for formatting logic to work properly
-					const li = document.createElement('li');
-
-					const details = document.createElement('details');
-					if (isRoot) {
-						details.open = true;
-						li.className = 'root-node';
-					}
-
-					const summary = document.createElement('summary');
-					summary.innerHTML = `<div class="node-wrapper"><span class="node"><span class="icon"></span>${person.name}</span></div>`;
-					details.appendChild(summary);
-
-					const ul = document.createElement('ul');
-					person.children.forEach((child) =>
-						ul.appendChild(buildNode(child))
-					);
-					details.appendChild(ul);
-
-					if (isRoot) {
-						// Root node doesn't need <details> markup to look like a sub-branch
-						li.innerHTML = `<div class="node-wrapper"><span class="node">${person.name}</span></div>`;
-						li.appendChild(ul);
-						return li;
-					}
-
-					li.appendChild(details);
-					return li;
-				} else {
-					// Leaf node
-					const li = document.createElement('li');
-					li.innerHTML = `<div class="node-wrapper"><span class="node">${person.name}</span></div>`;
-					return li;
-				}
-			}
-
-			function renderTree() {
-				const root = document.getElementById('tree-root');
-				const containerUl = document.createElement('ul');
-				containerUl.appendChild(buildNode(familyData, true));
-				root.appendChild(containerUl);
-			}
-
-			function toggleAll(state) {
-				document
-					.querySelectorAll('.tree-container details')
-					.forEach((d) => (d.open = state));
-			}
-
-			function searchTree() {
-				const q = document.getElementById('search').value.toLowerCase();
-				document.querySelectorAll('.node').forEach((n) => {
-					n.classList.remove('highlight');
-					const text = n.textContent
-						.replace(/[+−]/g, '')
-						.toLowerCase();
-					if (q && text.includes(q)) {
-						n.classList.add('highlight');
-						let p = n.parentElement;
-						while (p) {
-							if (p.tagName === 'DETAILS') p.open = true;
-							p = p.parentElement;
-						}
-					}
-				});
-			}
-
-			// Boot
-			renderTree();
-		</script>
-	</body>
+buildLegend();
+renderTree();
+</script>
+</body>
 </html>
