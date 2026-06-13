@@ -8,8 +8,11 @@
   <meta name="keywords" content="Akbar Ali, family tree, shijra, Quasim Ali, Abdullah, Haidar Ali, Adham Ali, genealogy"/>
   <style>
     :root {
-      --gen0:#4a2a0a; --gen1:#7b3f00; --gen2:#9c5c00; --gen3:#b07a2e;
-      --gen4:#c4913c; --gen5:#5a7a3a; --gen6:#3a6e8c; --gen7:#5b4fa8; --gen8:#7a3560;
+      /* Gen 0-4: same warm brown family */
+      --ancestral:#63482a;
+      /* Gen 5-10: distinct colors */
+      --gen5:#2e7d32; --gen6:#1565c0; --gen7:#6a1f96; --gen8:#c62828;
+      --gen9:#00838f; --gen10:#e65100;
       --bg:#f7f4eb; --line:#c8bfa7; --text:#3a2a10;
     }
     *,*::before,*::after{box-sizing:border-box}
@@ -45,21 +48,30 @@
     details>summary>.node-wrapper>.node .icon::before{content:'+'}
     details[open]>summary>.node-wrapper>.node .icon::before{content:'−'}
     .root-node>.node-wrapper>.node .icon{display:none}
-    .node[data-gen="0"]{background:var(--gen0);color:#fff;border-color:#2e1800}
-    .node[data-gen="1"]{background:var(--gen1);color:#fff;border-color:#5c2e00}
-    .node[data-gen="2"]{background:var(--gen2);color:#fff;border-color:#7a4600}
-    .node[data-gen="3"]{background:#e8d5a0;color:#3a2010;border-color:var(--gen3)}
-    .node[data-gen="4"]{background:#f0e4be;color:#3a2010;border-color:var(--gen4)}
-    .node[data-gen="5"]{background:#d6ebcc;color:#1e3a12;border-color:var(--gen5)}
-    .node[data-gen="6"]{background:#cde4f0;color:#12304a;border-color:var(--gen6)}
-    .node[data-gen="7"]{background:#e0dbf5;color:#2a1e5a;border-color:var(--gen7)}
-    .node[data-gen="8"],.node[data-gen="9"],.node[data-gen="10"]{background:#f2d8ec;color:#4a1235;border-color:var(--gen8)}
-    li>.node-wrapper>.node[data-gen="3"]{background:#f5edd8}
-    li>.node-wrapper>.node[data-gen="4"]{background:#faf3e0}
-    li>.node-wrapper>.node[data-gen="5"]{background:#e8f5e2}
-    li>.node-wrapper>.node[data-gen="6"]{background:#dceef8}
-    li>.node-wrapper>.node[data-gen="7"]{background:#ece8f8}
-    li>.node-wrapper>.node[data-gen="8"],li>.node-wrapper>.node[data-gen="9"]{background:#f8e4f2}
+    /* Gen 0–4: same ancestral brown */
+    .node[data-gen="0"],.node[data-gen="1"],.node[data-gen="2"],.node[data-gen="3"],.node[data-gen="4"]
+      {background:var(--ancestral);color:#fff;border-color:#3a2510}
+    /* slightly lighter for leaf nodes in gen 3-4 */
+    li>.node-wrapper>.node[data-gen="3"],li>.node-wrapper>.node[data-gen="4"]
+      {background:#7a5a36;border-color:#5a3e20}
+    /* Gen 5: forest green */
+    .node[data-gen="5"]{background:var(--gen5);color:#fff;border-color:#1b5e20}
+    li>.node-wrapper>.node[data-gen="5"]{background:#388e3c;border-color:#2e7d32}
+    /* Gen 6: royal blue */
+    .node[data-gen="6"]{background:var(--gen6);color:#fff;border-color:#0d3c7a}
+    li>.node-wrapper>.node[data-gen="6"]{background:#1976d2;border-color:#1565c0}
+    /* Gen 7: deep purple */
+    .node[data-gen="7"]{background:var(--gen7);color:#fff;border-color:#4a1570}
+    li>.node-wrapper>.node[data-gen="7"]{background:#8e24aa;border-color:#6a1f96}
+    /* Gen 8: crimson red */
+    .node[data-gen="8"]{background:var(--gen8);color:#fff;border-color:#8b0000}
+    li>.node-wrapper>.node[data-gen="8"]{background:#e53935;border-color:#c62828}
+    /* Gen 9: teal */
+    .node[data-gen="9"]{background:var(--gen9);color:#fff;border-color:#005662}
+    li>.node-wrapper>.node[data-gen="9"]{background:#00acc1;border-color:#00838f}
+    /* Gen 10+: deep orange */
+    .node[data-gen="10"]{background:var(--gen10);color:#fff;border-color:#bf360c}
+    li>.node-wrapper>.node[data-gen="10"]{background:#ef6c00;border-color:#e65100}
     .highlight{background:#f1c40f!important;color:#1a0a00!important;border-color:#d4a017!important;box-shadow:0 0 0 3px rgba(241,196,15,.4)!important}
     .footer{text-align:center;margin-top:60px;padding:22px 20px;border-top:1px solid #ddd;font-size:.92rem;color:#666}
     .footer a{display:inline-flex;align-items:center;gap:8px;color:#25d366;font-weight:bold;text-decoration:none;font-size:1rem;padding:8px 18px;border:2px solid #25d366;border-radius:30px;margin-top:10px;transition:background .2s,color .2s}
@@ -89,15 +101,13 @@
 const familyData={name:'Quasim Ali (قاسم علی)',children:[{name:'Abdullah (عبداللہ)',children:[{name:'Haidar Ali (حیدر علی)',children:[{name:'Adham Ali (ادہم علی)',children:[{name:'Akbar Ali (اکبر علی)',children:[{name:'Sirajul-Haque (سراج الحق)',children:[{name:'Abdur Rahman (عبدالرحمٰن)',children:[{name:'Jameel Ahmad (جمیل احمد)',children:[{name:'Khurshid Ahmad (خورشید)'},{name:'Dulare (دلارے)'},{name:'Maqbool Ahmad (مقبول)'}]}]},{name:'Mutiur Rahaman (مطیع الرحمن)',children:[{name:'Afaque Ahmad (آفاق)'},{name:'Mushtaque Ahmad (مشتاق)',children:[{name:'Abdullah Mushtaque (عبداللہ)'},{name:'Sanaullah Mushtaque (ثناء اللہ)'},{name:'Enayatullah Mushtaque (عنایت اللہ)'},{name:'Rezaullah Mushtaque (رضاء اللہ)'}]}]}]},{name:'Umar Ali (عمر علی)',children:[{name:'Abdullah (عبداللہ)',children:[{name:'Ataur-Rahman (عطاء الرحمن)',children:[{name:'Izhar Ahmad (اظہار)'}]}]},{name:'Ubaidullah (عبیداللہ)',children:[{name:'Abdul Ahad (عبدالاحد)',children:[{name:'Ajaz Hassan (اعجاز)',children:[{name:'Saqlain Ajaz (ثقلین)'},{name:'Kaunain Ajaz (کونین)'},{name:'Hasnain Ajaz (حسنین)'}]},{name:'Faiyaz Hassan (فیاض)',children:[{name:'Abdullah Ahad Dayyan (دیان)'}]},{name:'Reyaz Hassan (ریاض)',children:[{name:'Ibrahim (ابراہیم)'},{name:'Ayan (ایان)'}]},{name:'Imteyaz Hassan (امتیاز)',children:[{name:'Zaid (زید)'},{name:'Zubaid (زبید)'}]},{name:'Zulfiqar Hassan (ذوالفقار)'},{name:'Jawwad Hassan (جواد)'},{name:'Iqbal Hassan (اقبال)'}]},{name:'Ahmad Ali (احمد علی)',children:[{name:'Maqsood Ahmad (مقصود)'},{name:'Marghoob Ahmad (مرغوب)'},{name:'Saheb Ahmad (صاحب)'},{name:'Mansoor Ahmad (منصور)'},{name:'Mehboob Ahmad (محبوب)'}]},{name:'Abdul Bari (عبدالباری)',children:[{name:'Md Shahabuddin (شہاب الدین)',children:[{name:'Ahmad (احمد)'}]},{name:'Md Zeyauddin (ضیاء الدین)'},{name:'Md Ehteshamuddin (احتشام الدین)'}]}]},{name:'Abdul Majeed (عبدالمجید)'}]},{name:'Nawab Ali (نواب علی)',children:[{name:'Abdur Razzaq (عبدالرزاق)',children:[{name:'Zafar Alam (ظفر عالم)',children:[{name:'Saeed uz Zafar (سعید)'},{name:'Rashid uz Zafar (راشد)'},{name:'Sultan Zafar (سلطان)'}]},{name:'Zaheer Alam (ظہیر عالم)',children:[{name:'Tanweer Alam (تنویر)'},{name:'Tauseef Alam (توصیف)'},{name:'Tauqeer Alam (توقیر)'},{name:'Tafseer Alam (تفسیر)'}]},{name:'Badre Alam (بدر عالم)',children:[{name:'Rizwan Badar (رضوان)',children:[{name:'Modabbir Rizwan (مدبر)'},{name:'Mubashir Rizwan (مبشر)'}]},{name:'Hassan Badar (حسن)',children:[{name:'Maaz Rashid (معاذ)'},{name:'Muawiz Shahid (معوذ)'}]},{name:'Affan Badar (عفان)'},{name:'Sufiyan Badar (سفیان)'},{name:'Rehan Badar (ریحان)'}]}]},{name:'Abdul Ghaffar (عبدالغفار)',children:[{name:'Shamshuz Zuha (شمس الضحیٰ)',children:[{name:'Ashraf ul Huda (اشرف)',children:[{name:'Ibrahim Ashraf (ابراہیم)'},{name:'Ismail Ashraf (اسماعیل)'}]},{name:'Ahsan ul Huda (احسن)',children:[{name:'Rayyan Ahsan (ریان)'}]},{name:'Ehsan ul Huda (احسان)'}]},{name:'Qamraul Huda (قمر الہدیٰ)',children:[{name:'Zeya ul Huda (ضیاء)'},{name:'Raafe ul Huda (رافع)',children:[{name:'Ramish (رامش)'},{name:'Ashir (عاشر)'}]},{name:'Ikram ul Huda (اکرام)'}]}]},{name:'Abdul Fatah (عبدالفتاح)',children:[{name:'Umar Tarique (عمر طارق)',children:[{name:'Adnan (عدنان)'}]},{name:'Umar Khalid (عمر خالد)'},{name:'Umar Rashid (راشد)',children:[{name:'Yaqoob Umar (یعقوب)'}]}]},{name:'Abdul Hameed (عبدالحمید)',children:[{name:'Urooj Hamidi (عروج)',children:[{name:'Sharique Urooj (شارق)'},{name:'Saim Urooj (صائم)'}]},{name:'Iqbal Hamidi (اقبال)',children:[{name:'Hamid (حامد)'}]},{name:'Md Aarif (عارف)'}]},{name:'Abdul Wahab (عبدالوہاب)',children:[{name:'Aleem Akhtar (علیم)',children:[{name:'Jawed Akhtar (جاوید)',children:[{name:'Aquib Jawed (عاقب)'},{name:'Aatif Jawed (عاطف)'},{name:'Asim Jawed (عاصم)'}]},{name:'Masood Akhtar (مسعود)',children:[{name:'Abdullah Masood (عبداللہ)'},{name:'Osama Masood (اسامہ)'}]},{name:'Saud Akhtar (سعود)'},{name:'Shakeel Akhtar (شکیل)',children:[{name:'Nabil Akhtar (نبيل)'}]}]},{name:'Jameel Akhtar (جمیل)',children:[{name:'Inayatullah (عنایت)'},{name:'Hidayatullah (ہدایت)'},{name:'Ayatullah (آیت)'}]},{name:'Mohammad Alam (محمد)',children:[{name:'Arshad Wahab (ارشد)'},{name:'Saquib (ثاقب)'},{name:'Kashif (کاشف)'}]},{name:'Mahmood Alam (محمود)',children:[{name:'Yasir Mahmood (یاسر)'},{name:'Tahir Mahmood (طاہر)'}]},{name:'Muhamid Alam (محامد)',children:[{name:'Zulqarnain (ذوالقرنین)'},{name:'Saifi (سیفی)'}]}]}]},{name:'Junaab Ali (جناب علی)',children:[{name:'Habibur Rahman (حبیب الرحمن)',children:[{name:'Aslam Rahmani (اسلم)',children:[{name:'Aftab Ahmad (آفتاب)',children:[{name:'Yasir Aftab (یاسر)'},{name:'Hamid Aftab (حامد)'},{name:'Ammar Aftab (عمار)'}]},{name:'Intekhab Ahmad (انتخاب)',children:[{name:'Yusuf Intekhab (یوسف)'}]},{name:'Mehtab Ahmad (مہتاب)',children:[{name:'Abdullah (عبداللہ)'},{name:'Mohammad (محمد)'}]}]},{name:'Md Mustafa (مصطفیٰ)',children:[{name:'Tanweer Mustafa (تنویر)',children:[{name:'Md Ibrahim (ابراہیم)'}]},{name:'Tauqeer Mustafa (توقیر)'},{name:'Tauseef Mustafa (توصیف)',children:[{name:'Abdur Rehman (عبدالرحمن)'}]},{name:'Waqar Mustafa (وقار)'}]},{name:'Zakir Hussain (ذاکر)',children:[{name:'Shafquat Rana (شفقت)'}]},{name:'Shakir Hussain (شاکر)',children:[{name:'Saquib (ثاقب)'},{name:'Aquib (عاقب)'},{name:'Rashid (راشد)'},{name:'Khalid (خالد)'}]},{name:'Nasir Hussain (ناصر)',children:[{name:'Altamash Nasir (التتمش)'}]},{name:'Qaisar Hussain (قیصر)',children:[{name:'Danish (دانش)'},{name:'Tabish (تابش)'}]}]},{name:'Azizur Rahman (عزیز الرحمن)',children:[{name:'Abdul Shakoor (شکور)',children:[{name:'Ishteyaq Ahmad (اشتیاق)',children:[{name:'Kamran Ahmad (کامران)'},{name:'Furqan Ahmad (فرقان)'},{name:'Farhan Ahmad (فرحان)'}]},{name:'Iftekhar Ahmad (افتخار)',children:[{name:'Saif Ahmad (سیف)'},{name:'Kaif Ahmad (کیف)'},{name:'Faiz Ahmad (فیض)'}]},{name:'Imteyaz Ahmad (امتیاز)',children:[{name:'Mohammad (محمد)'}]}]},{name:'Abdur Rauf (رؤف)',children:[{name:'Zahirul Haque (ظہیرال)',children:[{name:'Md Shamsher (شمشیر)'},{name:'Md Tanweer (تنویر)'},{name:'Md Nafis (نفیس)'},{name:'Md Rais (رئیس)'},{name:'Md Said (سعید)'}]},{name:'Nasirul Haque (ناصرال)',children:[{name:'Irfan Haidar (حیدر)'}]},{name:'Md Bashir (بشیر)'},{name:'Md Sagheer (صغیر)',children:[{name:'Md Shahid (شاہد)'},{name:'Md Mujahid (مجاھد)'}]},{name:'Md Shabbir (شبیر)',children:[{name:'Md Armaan (ارمان)'}]},{name:'Md Ariz (عارض)',children:[{name:'Md Ehtesham (احتشام)'},{name:'Md Emad (عماد)'},{name:'Md Imran (عمران)'}]},{name:'Md Arif (عارف)',children:[{name:'Md Ayaan (ایان)'}]}]}]},{name:'Md Haroon (ہارون)',children:[{name:'Sabir Hussain (صابر)',children:[{name:'Akramullah (اکرم)'},{name:'Sanaullah Sabri (ثناء اللہ)'}]},{name:'Jabir Hussain (جابر)',children:[{name:'Wasim Akram (وسیم)',children:[{name:'Arham Wasim (ارحم)'}]},{name:'Nasim Akram (نسیم)'}]},{name:'Sajid Hussain (ساجد)',children:[{name:'Muzakkir Shahab (مذکر)'}]},{name:'Adbul Majid (ماجد)',children:[{name:'Saifullah Saifi (سیف اللہ)',children:[{name:'Mugheerah Majid (مغیرہ)'},{name:'Musab Majid (مصعب)'}]},{name:'Amanullah (امان اللہ)'}]},{name:'Abid Hussain (عابد)',children:[{name:'Abdullah Abid (عبداللہ)'},{name:'Inayatullah (عنایت)'}]}]},{name:'Md Dawood (داؤد)'},{name:'Nurul Hasan (نور الحسن)',children:[{name:'Junaid Ahmad (جنید)'},{name:'Shakeel Ahmad (شکیل)'},{name:'Aqueel Ahmad (عقیل)'}]},{name:'Ameerul Hasan (امیر الحسن)',children:[{name:'Faiyaz Ahmad (فیاض)',children:[{name:'Waliullah Adnan (عدنان)'},{name:'Wajahatullah Rehan (وجاہت)'}]},{name:'Perwez Ahmad (پرویز)',children:[{name:'Abbad Ahmad (عباد)'},{name:'Hisham Ahmad (ہشام)'}]}]}]},{name:'Anwar Ali (انور علی)',children:[{name:'Md Ayyub (ایوب)',children:[{name:'Umar Ahsan (عمر احسن)',children:[{name:'Tanweer Ahsan (تنویر)',children:[{name:'Ubedah Ahsan (عبیدہ)'},{name:'Huzaifa Ahsan (حذیفہ)'},{name:'Khuzaima Ahsan (خزیمہ)'}]},{name:'Zeya Arshi (عرشی)',children:[{name:'Ammar Ahsan (عمار)'},{name:'Saad Ahsan (سعد)'},{name:'Qutaiba Ahsan (قتیبہ)'}]}]},{name:'Akhtar Naseh (اختر ناصح)',children:[{name:'Md Asif (آصف)',children:[{name:'Faisal (فیصل)'}]},{name:'Iqbal Akhtar (اقبال)',children:[{name:'Sharjeel Iqbal (شرجیل)'},{name:'Raheel Iqbal (راحیل)'},{name:'Daniyal Iqbal (دانیال)'},{name:'Aseel Iqbal (اصیل)'},{name:'Haseel Iqbal (حصیل)'},{name:'Takmeel Iqbal (تکمیل)'}]},{name:'Salman Akhtar (سلمان)',children:[{name:'Adeel Ghazali (غزالی)'},{name:'Nabeel Hejazi (حجازی)'},{name:'Razi (رازی)'}]}]}]},{name:'Md Shoaib (محمد شعیب)',children:[{name:'Hasan (حسن)'},{name:'Hasnain (حسنین)'}]}]}]}]}]}]}]};
 
 const GEN_LABELS=[
-  {gen:0,label:'Gen 1 – Quasim Ali',color:'#4a2a0a'},
-  {gen:1,label:'Gen 2 – Abdullah',color:'#7b3f00'},
-  {gen:2,label:'Gen 3 – Haidar Ali',color:'#9c5c00'},
-  {gen:3,label:'Gen 4 – Adham Ali',color:'#b07a2e'},
-  {gen:4,label:'Gen 5 – Akbar Ali',color:'#c4913c'},
-  {gen:5,label:'Gen 6',color:'#5a7a3a'},
-  {gen:6,label:'Gen 7',color:'#3a6e8c'},
-  {gen:7,label:'Gen 8',color:'#5b4fa8'},
-  {gen:8,label:'Gen 9+',color:'#7a3560'}
+  {label:'Gen 1–4 (Quasim Ali → Akbar Ali)',color:'#63482a'},
+  {label:'Gen 5',color:'#2e7d32'},
+  {label:'Gen 6',color:'#1565c0'},
+  {label:'Gen 7',color:'#6a1f96'},
+  {label:'Gen 8',color:'#c62828'},
+  {label:'Gen 9',color:'#00838f'},
+  {label:'Gen 10+',color:'#e65100'}
 ];
 
 function buildLegend(){
@@ -140,6 +150,7 @@ function buildNode(person,depth,isRoot){
   if(hasChildren){
     var li=document.createElement('li');
     var details=document.createElement('details');
+    if(depth<5) details.open=true;  /* auto-expand gen 1–5 */
     var summary=document.createElement('summary');
     summary.innerHTML='<div class="node-wrapper"><span class="node" data-gen="'+g+'"><span class="icon"></span>'+nameHTML(person.name)+'</span></div>';
     details.appendChild(summary);
