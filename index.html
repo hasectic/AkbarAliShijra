@@ -8,364 +8,477 @@
 			name="description"
 			content="Family tree (Shijra) of Akbar Ali — lineage from Quasim Ali through all generations."
 		/>
-		<meta
-			name="keywords"
-			content="Akbar Ali, family tree, shijra, Quasim Ali, Abdullah, Haidar Ali, Adham Ali, genealogy"
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+			rel="stylesheet"
 		/>
 		<style>
 			:root {
-				/* Gen 0-4: same warm brown family */
-				--ancestral: #63482a;
-				/* Gen 5-10: distinct colors */
-				--gen5: #2e7d32;
-				--gen6: #1565c0;
-				--gen7: #6a1f96;
-				--gen8: #c62828;
-				--gen9: #00838f;
-				--gen10: #e65100;
-				--bg: #f7f4eb;
-				--line: #c8bfa7;
-				--text: #3a2a10;
+				--bg: #faf7f0;
+				--parch: #f2ead8;
+				--ink: #2c1a0e;
+				--gold: #9a6f2e;
+				--gold-lt: #c8973e;
+				--line: #c8b48a;
+				--shadow: rgba(60, 30, 5, 0.1);
+
+				--g0: #3d2008;
+				--g1: #5c3010;
+				--g2: #7a4218;
+				--g3: #9a5a22;
+				--g4: #b87030;
+				--g5: #2e6b38;
+				--g6: #1a5494;
+				--g7: #5c1a82;
+				--g8: #981822;
+				--g9: #007080;
+				--g10: #c04800;
 			}
 			*,
 			*::before,
 			*::after {
 				box-sizing: border-box;
-			}
-			body {
-				font-family: 'Segoe UI', Arial, sans-serif;
 				margin: 0;
-				padding: 30px 20px 60px;
+				padding: 0;
+			}
+
+			body {
+				font-family: 'Lato', sans-serif;
 				background: var(--bg);
-				color: var(--text);
+				color: var(--ink);
+				min-height: 100vh;
 			}
-			h1 {
+
+			/* ── HEADER ── */
+			header {
+				background: linear-gradient(
+					160deg,
+					#2c1a0e 0%,
+					#5c3010 60%,
+					#9a6f2e 100%
+				);
+				color: #f2ead8;
 				text-align: center;
-				font-size: 2.2rem;
-				margin-bottom: 4px;
-				color: var(--gen0);
+				padding: 36px 24px 28px;
+				position: relative;
+				overflow: hidden;
 			}
-			.subtitle {
-				text-align: center;
-				color: #8c765c;
-				margin-bottom: 10px;
-				font-size: 1rem;
+			header::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c8973e' stroke-width='0.4' opacity='0.18'%3E%3Cpolygon points='30,2 56,16 56,44 30,58 4,44 4,16'/%3E%3C/g%3E%3C/svg%3E")
+					repeat;
+				pointer-events: none;
 			}
-			.legend {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
-				gap: 8px;
-				margin: 0 auto 28px;
-				max-width: 900px;
+			header .arabic-title {
+				font-family: 'Amiri', serif;
+				font-size: 2.4rem;
+				color: #e8d49a;
+				letter-spacing: 0.06em;
+				text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+				margin-bottom: 6px;
+				position: relative;
 			}
-			.legend-item {
+			header h1 {
+				font-family: 'Lato', sans-serif;
+				font-weight: 300;
+				font-size: 1.1rem;
+				letter-spacing: 0.22em;
+				text-transform: uppercase;
+				color: #c8b07a;
+				position: relative;
+			}
+			header .divider {
+				width: 80px;
+				height: 2px;
+				background: linear-gradient(
+					90deg,
+					transparent,
+					var(--gold-lt),
+					transparent
+				);
+				margin: 14px auto 16px;
+			}
+			header .subtitle {
+				font-size: 0.84rem;
+				color: #b09060;
+				letter-spacing: 0.06em;
+				position: relative;
+			}
+
+			/* ── CONTROLS ── */
+			.controls-bar {
+				background: var(--parch);
+				border-bottom: 1px solid var(--line);
+				padding: 14px 24px;
 				display: flex;
 				align-items: center;
-				gap: 6px;
-				font-size: 0.82rem;
-				color: #555;
-			}
-			.legend-dot {
-				width: 14px;
-				height: 14px;
-				border-radius: 50%;
-				flex-shrink: 0;
-			}
-			.controls {
-				display: flex;
-				justify-content: center;
 				gap: 10px;
-				margin-bottom: 12px;
 				flex-wrap: wrap;
+				justify-content: center;
+			}
+			.search-wrap {
+				position: relative;
+				flex: 1 1 260px;
+				max-width: 360px;
+			}
+			.search-wrap svg {
+				position: absolute;
+				left: 12px;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--gold);
+				pointer-events: none;
 			}
 			input#search {
-				padding: 10px 16px;
-				width: 320px;
+				width: 100%;
+				padding: 9px 14px 9px 38px;
 				border: 1.5px solid var(--line);
-				border-radius: 8px;
+				border-radius: 6px;
 				background: #fff;
-				color: var(--text);
-				font-size: 0.95rem;
+				color: var(--ink);
+				font-family: 'Lato', sans-serif;
+				font-size: 0.9rem;
 				outline: none;
 				transition:
 					border-color 0.2s,
 					box-shadow 0.2s;
 			}
 			input#search:focus {
-				border-color: var(--gen2);
-				box-shadow: 0 0 6px rgba(156, 92, 0, 0.25);
+				border-color: var(--gold);
+				box-shadow: 0 0 0 3px rgba(154, 111, 46, 0.15);
 			}
 			input#search::placeholder {
-				color: #aaa;
+				color: #b0a080;
 			}
 			.btn {
-				padding: 10px 20px;
-				background: var(--ancestral);
-				color: #fff;
-				border: 2px solid #3a2510;
-				border-radius: 8px;
-				font-weight: bold;
-				font-size: 0.9rem;
+				padding: 9px 18px;
+				background: var(--g2);
+				color: #f2ead8;
+				border: none;
+				border-radius: 6px;
+				font-family: 'Lato', sans-serif;
+				font-weight: 700;
+				font-size: 0.82rem;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
 				cursor: pointer;
 				transition:
 					background 0.2s,
 					transform 0.1s;
 			}
 			.btn:hover {
-				background: #3a2510;
+				background: var(--g1);
 				transform: translateY(-1px);
 			}
 			#result-count {
+				font-size: 0.82rem;
+				color: var(--gold);
+				font-style: italic;
+				min-width: 120px;
 				text-align: center;
-				font-size: 0.88rem;
-				color: #7a5a30;
-				min-height: 1.4em;
-				margin-bottom: 20px;
 			}
-			.tree-container {
-				max-width: 980px;
-				margin: 0 auto;
-				padding-left: 20px;
-			}
-			.tree-container ul {
-				list-style: none;
-				margin: 0;
-				padding-left: 30px;
-				position: relative;
-			}
-			.tree-container ul::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 10px;
-				width: 2px;
-				height: 100%;
-				background: var(--line);
-			}
-			.tree-container ul > li:last-child::after {
-				content: '';
-				position: absolute;
-				top: 22px;
-				left: 10px;
-				width: 2px;
-				height: 100%;
+
+			/* ── LEGEND ── */
+			.legend-bar {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 6px 16px;
+				padding: 10px 24px;
 				background: var(--bg);
+				border-bottom: 1px solid #e0d5c0;
 			}
-			.tree-container li {
-				position: relative;
-				margin: 7px 0;
-			}
-			.tree-container details {
-				outline: none;
-				position: relative;
-			}
-			.tree-container summary {
-				list-style: none;
-				outline: none;
-			}
-			.tree-container summary::-webkit-details-marker {
-				display: none;
-			}
-			.node-wrapper {
-				position: relative;
-				display: inline-flex;
+			.legend-item {
+				display: flex;
 				align-items: center;
+				gap: 6px;
+				font-size: 0.76rem;
+				color: #7a6040;
 			}
-			.node-wrapper::before {
-				content: '';
-				position: absolute;
-				top: 50%;
-				left: -20px;
-				width: 20px;
-				height: 2px;
-				background: var(--line);
-			}
-			.node {
-				display: inline-flex;
-				align-items: center;
-				gap: 8px;
-				padding: 5px 14px;
-				border-radius: 8px;
-				font-size: 0.92rem;
-				font-weight: 600;
-				box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-				transition: all 0.2s;
-				user-select: none;
-				border: 1.5px solid transparent;
-			}
-			.node:hover {
-				filter: brightness(1.07);
-			}
-			.name-en {
-				font-family: 'Segoe UI', Arial, sans-serif;
-				letter-spacing: 0.01em;
-			}
-			.name-sep {
-				font-weight: 300;
-				font-size: 0.8rem;
-				opacity: 0.4;
-			}
-			.name-ur {
-				font-family:
-					'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', Arial,
-					sans-serif;
-				font-size: 1rem;
-				direction: rtl;
-				unicode-bidi: embed;
-			}
-			.icon {
-				margin-right: 2px;
-				font-weight: bold;
-				width: 13px;
-				font-size: 0.9rem;
+			.legend-dot {
+				width: 12px;
+				height: 12px;
+				border-radius: 3px;
 				flex-shrink: 0;
 			}
-			details > summary > .node-wrapper > .node .icon::before {
-				content: '+';
+
+			/* ── TREE WRAPPER ── */
+			.tree-scroll {
+				overflow-x: auto;
+				overflow-y: visible;
+				padding: 40px 20px 80px;
 			}
-			details[open] > summary > .node-wrapper > .node .icon::before {
-				content: '−';
+
+			/* ── TOP-DOWN VERTICAL TREE ── */
+			#vtree-root {
+				display: flex;
+				justify-content: center;
+				min-width: max-content;
 			}
-			.root-node > .node-wrapper > .node .icon {
+
+			/* Individual tree node groups */
+			.node-group {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				position: relative;
+				padding: 0 4px;
+			}
+
+			/* The pill node */
+			.node-pill {
+				display: inline-flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 7px 14px 6px;
+				border-radius: 10px;
+				font-size: 0.82rem;
+				font-weight: 700;
+				cursor: pointer;
+				user-select: none;
+				transition:
+					transform 0.15s,
+					box-shadow 0.15s,
+					filter 0.15s;
+				border: 2px solid transparent;
+				box-shadow: 0 2px 8px var(--shadow);
+				position: relative;
+				white-space: nowrap;
+				min-width: 90px;
+				text-align: center;
+			}
+			.node-pill:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 5px 16px rgba(60, 30, 5, 0.18);
+				filter: brightness(1.08);
+			}
+			.node-pill.has-children::after {
+				content: '';
+				position: absolute;
+				bottom: -12px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 2px;
+				height: 12px;
+				background: var(--line);
+			}
+
+			.pill-en {
+				font-family: 'Lato', sans-serif;
+				font-size: 0.82rem;
+				font-weight: 700;
+				line-height: 1.2;
+			}
+			.pill-ur {
+				font-family: 'Amiri', serif;
+				font-size: 0.95rem;
+				direction: rtl;
+				line-height: 1.3;
+				color: inherit;
+				opacity: 0.85;
+			}
+
+			/* collapse toggle */
+			.toggle-btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 18px;
+				height: 18px;
+				border-radius: 50%;
+				background: rgba(255, 255, 255, 0.3);
+				border: 1.5px solid rgba(255, 255, 255, 0.5);
+				font-size: 0.7rem;
+				font-weight: 900;
+				line-height: 1;
+				cursor: pointer;
+				margin-top: 4px;
+				transition: background 0.15s;
+				flex-shrink: 0;
+			}
+			.toggle-btn:hover {
+				background: rgba(255, 255, 255, 0.5);
+			}
+
+			/* connector SVG overlay */
+			.connectors {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				overflow: visible;
+			}
+
+			/* children container under a node — siblings go side by side */
+			.children-wrap {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: flex-start;
+				gap: 0;
+				position: relative;
+				margin-top: 26px;
+			}
+			.children-wrap.collapsed {
 				display: none;
 			}
-			/* Gen 0–4: same ancestral brown */
-			.node[data-gen='0'],
-			.node[data-gen='1'],
-			.node[data-gen='2'],
-			.node[data-gen='3'],
-			.node[data-gen='4'] {
-				background: var(--ancestral);
-				color: #fff;
-				border-color: #3a2510;
+
+			/* Gen colors */
+			.g0 {
+				background: var(--g0);
+				color: #f5e9d0;
+				border-color: #1a0a04;
 			}
-			/* slightly lighter for leaf nodes in gen 3-4 */
-			li > .node-wrapper > .node[data-gen='3'],
-			li > .node-wrapper > .node[data-gen='4'] {
-				background: #7a5a36;
-				border-color: #5a3e20;
+			.g1 {
+				background: var(--g1);
+				color: #f5e9d0;
+				border-color: #3a1a08;
 			}
-			/* Gen 5: forest green */
-			.node[data-gen='5'] {
-				background: var(--gen5);
-				color: #fff;
-				border-color: #1b5e20;
+			.g2 {
+				background: var(--g2);
+				color: #f5e9d0;
+				border-color: #5a2e0e;
 			}
-			li > .node-wrapper > .node[data-gen='5'] {
-				background: #388e3c;
-				border-color: #2e7d32;
+			.g3 {
+				background: var(--g3);
+				color: #fff8ec;
+				border-color: #7a4216;
 			}
-			/* Gen 6: royal blue */
-			.node[data-gen='6'] {
-				background: var(--gen6);
-				color: #fff;
-				border-color: #0d3c7a;
+			.g4 {
+				background: var(--g4);
+				color: #fff8ec;
+				border-color: #8a5020;
 			}
-			li > .node-wrapper > .node[data-gen='6'] {
-				background: #1976d2;
-				border-color: #1565c0;
+			.g5 {
+				background: var(--g5);
+				color: #e8ffe8;
+				border-color: #1a4a22;
 			}
-			/* Gen 7: deep purple */
-			.node[data-gen='7'] {
-				background: var(--gen7);
-				color: #fff;
-				border-color: #4a1570;
+			.g6 {
+				background: var(--g6);
+				color: #e4eeff;
+				border-color: #0a3060;
 			}
-			li > .node-wrapper > .node[data-gen='7'] {
-				background: #8e24aa;
-				border-color: #6a1f96;
+			.g7 {
+				background: var(--g7);
+				color: #f5e4ff;
+				border-color: #3a0a5a;
 			}
-			/* Gen 8: crimson red */
-			.node[data-gen='8'] {
-				background: var(--gen8);
-				color: #fff;
-				border-color: #8b0000;
+			.g8 {
+				background: var(--g8);
+				color: #ffe4e4;
+				border-color: #6a0010;
 			}
-			li > .node-wrapper > .node[data-gen='8'] {
-				background: #e53935;
-				border-color: #c62828;
+			.g9 {
+				background: var(--g9);
+				color: #e0f8f8;
+				border-color: #004850;
 			}
-			/* Gen 9: teal */
-			.node[data-gen='9'] {
-				background: var(--gen9);
-				color: #fff;
-				border-color: #005662;
+			.g10 {
+				background: var(--g10);
+				color: #fff0e0;
+				border-color: #8a2800;
 			}
-			li > .node-wrapper > .node[data-gen='9'] {
-				background: #00acc1;
-				border-color: #00838f;
-			}
-			/* Gen 10+: deep orange */
-			.node[data-gen='10'] {
-				background: var(--gen10);
-				color: #fff;
-				border-color: #bf360c;
-			}
-			li > .node-wrapper > .node[data-gen='10'] {
-				background: #ef6c00;
-				border-color: #e65100;
-			}
+
 			.highlight {
-				background: #f1c40f !important;
+				background: #e8c02a !important;
 				color: #1a0a00 !important;
-				border-color: #d4a017 !important;
-				box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.4) !important;
+				border-color: #b08010 !important;
+				box-shadow: 0 0 0 3px rgba(232, 192, 42, 0.5) !important;
 			}
-			.footer {
+
+			/* ── FOOTER ── */
+			footer {
 				text-align: center;
-				margin-top: 60px;
-				padding: 22px 20px;
-				border-top: 1px solid #ddd;
-				font-size: 0.92rem;
-				color: #666;
+				padding: 30px 20px 40px;
+				border-top: 1px solid var(--line);
+				background: var(--parch);
+				color: #8a6a40;
+				font-size: 0.88rem;
 			}
-			.footer a {
+			footer a {
 				display: inline-flex;
 				align-items: center;
 				gap: 8px;
 				color: #25d366;
-				font-weight: bold;
+				font-weight: 700;
 				text-decoration: none;
-				font-size: 1rem;
-				padding: 8px 18px;
+				padding: 8px 20px;
 				border: 2px solid #25d366;
 				border-radius: 30px;
-				margin-top: 10px;
+				margin-top: 12px;
 				transition:
 					background 0.2s,
 					color 0.2s;
 			}
-			.footer a:hover {
+			footer a:hover {
 				background: #25d366;
 				color: #fff;
 			}
-			.footer a svg {
+			footer a svg {
 				width: 20px;
 				height: 20px;
+			}
+
+			@media (max-width: 600px) {
+				.node-pill {
+					min-width: 70px;
+					font-size: 0.74rem;
+					padding: 5px 10px;
+				}
+				.pill-ur {
+					font-size: 0.85rem;
+				}
 			}
 		</style>
 	</head>
 	<body>
-		<h1>Family Tree &nbsp;(Shijra / شجرہ)</h1>
-		<p class="subtitle">
-			Click a name to expand / collapse &nbsp;&middot;&nbsp; Search by
-			English or Urdu name
-		</p>
-		<div class="legend" id="legend"></div>
-		<div class="controls">
-			<input
-				id="search"
-				onkeyup="searchTree()"
-				placeholder="Search name (English or اردو)&hellip;"
-				autocomplete="off"
-			/>
+		<header>
+			<div class="arabic-title">شجرہ نسب — اکبر علی</div>
+			<div class="divider"></div>
+			<h1>Family Tree &nbsp;·&nbsp; Akbar Ali</h1>
+			<p class="subtitle">
+				Click any name to expand or collapse that branch
+			</p>
+		</header>
+
+		<div class="controls-bar">
+			<div class="search-wrap">
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.2"
+				>
+					<circle cx="11" cy="11" r="8" />
+					<line x1="21" y1="21" x2="16.65" y2="16.65" />
+				</svg>
+				<input
+					id="search"
+					onkeyup="searchTree()"
+					placeholder="Search name (English or اردو)…"
+					autocomplete="off"
+				/>
+			</div>
 			<button class="btn" onclick="toggleAll(true)">Expand All</button>
 			<button class="btn" onclick="toggleAll(false)">Collapse All</button>
+			<span id="result-count"></span>
 		</div>
-		<div id="result-count"></div>
-		<div class="tree-container" id="tree-root"></div>
-		<div class="footer">
+
+		<div class="legend-bar" id="legend"></div>
+
+		<div class="tree-scroll">
+			<div id="vtree-root"></div>
+		</div>
+
+		<footer>
 			<p>
 				Want to <strong>add or modify</strong> a name in this family
 				tree?
@@ -381,7 +494,8 @@
 				</svg>
 				WhatsApp: +91 98976 99028
 			</a>
-		</div>
+		</footer>
+
 		<script>
 			const familyData = {
 				name: 'Quasim Ali (قاسم علی)',
@@ -791,8 +905,15 @@
 																						[
 																							{
 																								name: 'Aquib Jawed (عاقب)',
-																								children : [{name: 'Mohamamd Usman (عثمان)'},
-																											{name: 'Mohammad Yaseen (یاسین)'}]
+																								children:
+																									[
+																										{
+																											name: 'Mohamamd Usman (عثمان)'
+																										},
+																										{
+																											name: 'Mohammad Yaseen (یاسین)'
+																										}
+																									]
 																							},
 																							{
 																								name: 'Aatif Jawed (عاطف)'
@@ -1068,11 +1189,23 @@
 																		children:
 																			[
 																				{
-																					name: 'Zahirul Haque (ظہیرال)',
+																					name: 'Zahirul Haque (ظہیر الحق)',
 																					children:
 																						[
 																							{
-																								name: 'Md Shamsher (شمشیر)'
+																								name: 'Md Shamsher (شمشیر)',
+																								children:
+																									[
+																										{
+																											name: 'Md Hamza Shamsher (محمد حمزہ)'
+																										},
+																										{
+																											name: 'Md Yahya Shamsher (محمد یحییٰ)'
+																										},
+																										{
+																											name: 'Md Huzaifa Shamsher (محمد حذیفہ)'
+																										}
+																									]
 																							},
 																							{
 																								name: 'Md Tanweer (تنویر)'
@@ -1089,7 +1222,7 @@
 																						]
 																				},
 																				{
-																					name: 'Nasirul Haque (ناصرال)',
+																					name: 'Nasirul Haque (نصیر الحق)',
 																					children:
 																						[
 																							{
@@ -1397,20 +1530,46 @@
 				]
 			};
 
+			// ── gen colors ──
+			const GEN_COLORS = [
+				'g0',
+				'g1',
+				'g2',
+				'g3',
+				'g4',
+				'g5',
+				'g6',
+				'g7',
+				'g8',
+				'g9',
+				'g10'
+			];
 			const GEN_LABELS = [
-				{ label: 'Gen 1–4 (Quasim Ali → Akbar Ali)', color: '#63482a' },
-				{ label: 'Gen 5', color: '#2e7d32' },
-				{ label: 'Gen 6', color: '#1565c0' },
-				{ label: 'Gen 7', color: '#6a1f96' },
-				{ label: 'Gen 8', color: '#c62828' },
-				{ label: 'Gen 9', color: '#00838f' },
-				{ label: 'Gen 10+', color: '#e65100' }
+				{
+					label: 'Gen 1–4 (Ancestors)',
+					colors: ['#3d2008', '#5c3010', '#7a4218', '#9a5a22']
+				},
+				{ label: "Gen 5 (Akbar Ali's sons)", color: '#b87030' },
+				{ label: 'Gen 6', color: '#2e6b38' },
+				{ label: 'Gen 7', color: '#1a5494' },
+				{ label: 'Gen 8', color: '#5c1a82' },
+				{ label: 'Gen 9', color: '#981822' },
+				{ label: 'Gen 10+', color: '#007080' }
 			];
 
 			function buildLegend() {
 				const el = document.getElementById('legend');
-				GEN_LABELS.forEach(function (g) {
-					var d = document.createElement('div');
+				const items = [
+					{ label: 'Gen 1–4 (ancestors)', color: '#7a4218' },
+					{ label: 'Gen 5', color: '#b87030' },
+					{ label: 'Gen 6', color: '#2e6b38' },
+					{ label: 'Gen 7', color: '#1a5494' },
+					{ label: 'Gen 8', color: '#5c1a82' },
+					{ label: 'Gen 9', color: '#981822' },
+					{ label: 'Gen 10+', color: '#007080' }
+				];
+				items.forEach(function (g) {
+					const d = document.createElement('div');
 					d.className = 'legend-item';
 					d.innerHTML =
 						'<span class="legend-dot" style="background:' +
@@ -1423,129 +1582,256 @@
 			}
 
 			function parseName(full) {
-				var m = full.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+				const m = full.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
 				if (m) return { en: m[1].trim(), ur: m[2].trim() };
 				if (/^[\u0600-\u06FF\s]+$/.test(full.trim()))
 					return { en: '', ur: full.trim() };
 				return { en: full.trim(), ur: '' };
 			}
 
-			function nameHTML(full) {
-				var p = parseName(full),
-					en = p.en,
-					ur = p.ur;
-				if (en && ur)
-					return (
-						'<span class="name-en">' +
-						en +
-						'</span><span class="name-sep"> | </span><span class="name-ur">' +
-						ur +
-						'</span>'
-					);
-				if (ur) return '<span class="name-ur">' + ur + '</span>';
-				return '<span class="name-en">' + en + '</span>';
-			}
-
-			function buildNode(person, depth, isRoot) {
+			// Build the vertical top-down tree as nested DOM
+			function buildVNode(person, depth) {
 				depth = depth || 0;
-				isRoot = isRoot || false;
-				var hasChildren = person.children && person.children.length > 0;
-				var g = Math.min(depth, 9);
-				if (isRoot) {
-					var li = document.createElement('li');
-					li.className = 'root-node';
-					li.innerHTML =
-						'<div class="node-wrapper"><span class="node" data-gen="' +
-						g +
-						'">' +
-						nameHTML(person.name) +
-						'</span></div>';
-					var ul = document.createElement('ul');
-					person.children.forEach(function (c) {
-						ul.appendChild(buildNode(c, depth + 1));
-					});
-					li.appendChild(ul);
-					return li;
+				const hasChildren =
+					person.children && person.children.length > 0;
+				const genClass =
+					GEN_COLORS[Math.min(depth, GEN_COLORS.length - 1)];
+				const p = parseName(person.name);
+
+				const group = document.createElement('div');
+				group.className = 'node-group';
+				group.dataset.depth = depth;
+
+				// pill
+				const pill = document.createElement('div');
+				pill.className =
+					'node-pill ' +
+					genClass +
+					(hasChildren ? ' has-children' : '');
+				pill.dataset.name = person.name.toLowerCase();
+
+				if (p.en) {
+					const enSpan = document.createElement('span');
+					enSpan.className = 'pill-en';
+					enSpan.textContent = p.en;
+					pill.appendChild(enSpan);
 				}
+				if (p.ur) {
+					const urSpan = document.createElement('span');
+					urSpan.className = 'pill-ur';
+					urSpan.textContent = p.ur;
+					pill.appendChild(urSpan);
+				}
+
+				group.appendChild(pill);
+
 				if (hasChildren) {
-					var li = document.createElement('li');
-					var details = document.createElement('details');
-					if (depth < 5)
-						details.open = true; /* auto-expand gen 1–5 */
-					var summary = document.createElement('summary');
-					summary.innerHTML =
-						'<div class="node-wrapper"><span class="node" data-gen="' +
-						g +
-						'"><span class="icon"></span>' +
-						nameHTML(person.name) +
-						'</span></div>';
-					details.appendChild(summary);
-					var ul = document.createElement('ul');
+					// auto-expand first 5 gens
+					const expanded = depth < 4;
+
+					const childWrap = document.createElement('div');
+					childWrap.className =
+						'children-wrap' + (expanded ? '' : ' collapsed');
+
 					person.children.forEach(function (c) {
-						ul.appendChild(buildNode(c, depth + 1));
+						childWrap.appendChild(buildVNode(c, depth + 1));
 					});
-					details.appendChild(ul);
-					li.appendChild(details);
-					return li;
+
+					group.appendChild(childWrap);
+
+					pill.addEventListener('click', function () {
+						const isCollapsed =
+							childWrap.classList.contains('collapsed');
+						childWrap.classList.toggle('collapsed', !isCollapsed);
+						// redraw connectors after toggle (brief delay for layout)
+						setTimeout(drawAllConnectors, 50);
+					});
 				}
-				var li = document.createElement('li');
-				li.innerHTML =
-					'<div class="node-wrapper"><span class="node" data-gen="' +
-					g +
-					'">' +
-					nameHTML(person.name) +
-					'</span></div>';
-				return li;
+
+				return group;
 			}
 
-			function renderTree() {
-				var root = document.getElementById('tree-root');
-				var ul = document.createElement('ul');
-				ul.appendChild(buildNode(familyData, 0, true));
-				root.appendChild(ul);
+			// ── SVG connector lines ──
+			// We draw bezier curves from parent pill bottom-center to each child pill top-center
+			const svgNS = 'http://www.w3.org/2000/svg';
+
+			function getCenter(el) {
+				const r = el.getBoundingClientRect();
+				return {
+					x: r.left + r.width / 2,
+					y: r.top + r.height / 2,
+					top: r.top,
+					bottom: r.bottom,
+					left: r.left,
+					right: r.right
+				};
+			}
+
+			function drawAllConnectors() {
+				// Remove old SVG overlays
+				document
+					.querySelectorAll('.tree-svg-overlay')
+					.forEach(function (s) {
+						s.remove();
+					});
+
+				const scrollEl = document.querySelector('.tree-scroll');
+				const scrollRect = scrollEl.getBoundingClientRect();
+				const scrollLeft = scrollEl.scrollLeft;
+				const scrollTop = scrollEl.scrollTop;
+
+				// Create one big SVG overlay
+				const svg = document.createElementNS(svgNS, 'svg');
+				svg.classList.add('tree-svg-overlay');
+				svg.style.cssText =
+					'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;';
+
+				document
+					.querySelectorAll('.node-group')
+					.forEach(function (group) {
+						const childWrap = group.querySelector(
+							':scope > .children-wrap'
+						);
+						if (
+							!childWrap ||
+							childWrap.classList.contains('collapsed')
+						)
+							return;
+
+						const parentPill = group.querySelector(
+							':scope > .node-pill'
+						);
+						const childPills = Array.from(
+							childWrap.querySelectorAll(
+								':scope > .node-group > .node-pill'
+							)
+						);
+
+						if (!parentPill || childPills.length === 0) return;
+
+						const pRect = parentPill.getBoundingClientRect();
+						const px =
+							pRect.left +
+							pRect.width / 2 -
+							scrollRect.left +
+							scrollLeft;
+						const py = pRect.bottom - scrollRect.top + scrollTop;
+
+						// determine line color from parent pill's gen class
+						const genMatch =
+							parentPill.className.match(/\bg(\d+)\b/);
+						const depth = genMatch ? parseInt(genMatch[1]) : 0;
+						const lineColors = [
+							'#63482a',
+							'#7a5a36',
+							'#9a6a40',
+							'#b87030',
+							'#c88040',
+							'#2e6b38',
+							'#1a5494',
+							'#5c1a82',
+							'#981822',
+							'#007080',
+							'#c04800'
+						];
+						const stroke =
+							lineColors[Math.min(depth, lineColors.length - 1)];
+
+						childPills.forEach(function (cPill) {
+							const cRect = cPill.getBoundingClientRect();
+							const cx =
+								cRect.left +
+								cRect.width / 2 -
+								scrollRect.left +
+								scrollLeft;
+							const cy = cRect.top - scrollRect.top + scrollTop;
+
+							const midY = py + (cy - py) * 0.5;
+
+							const path = document.createElementNS(
+								svgNS,
+								'path'
+							);
+							path.setAttribute(
+								'd',
+								`M${px},${py} C${px},${midY} ${cx},${midY} ${cx},${cy}`
+							);
+							path.setAttribute('fill', 'none');
+							path.setAttribute('stroke', stroke);
+							path.setAttribute('stroke-width', '1.8');
+							path.setAttribute('stroke-opacity', '0.6');
+							svg.appendChild(path);
+						});
+					});
+
+				const treeScroll = document.querySelector('.tree-scroll');
+				treeScroll.style.position = 'relative';
+				treeScroll.appendChild(svg);
 			}
 
 			function toggleAll(state) {
 				document
-					.querySelectorAll('.tree-container details')
-					.forEach(function (d) {
-						d.open = state;
+					.querySelectorAll('.children-wrap')
+					.forEach(function (w) {
+						w.classList.toggle('collapsed', !state);
 					});
+				setTimeout(drawAllConnectors, 50);
 			}
 
 			function searchTree() {
-				var q = document
+				const q = document
 					.getElementById('search')
 					.value.trim()
 					.toLowerCase();
-				var count = 0;
-				document.querySelectorAll('.node').forEach(function (n) {
-					n.classList.remove('highlight');
-					if (!q) return;
-					var text = n.textContent
-						.replace(/[+\u2212|]/g, '')
-						.trim()
-						.toLowerCase();
-					if (text.indexOf(q) !== -1) {
-						n.classList.add('highlight');
-						count++;
-						var p = n.parentElement;
-						while (p) {
-							if (p.tagName === 'DETAILS') p.open = true;
-							p = p.parentElement;
+				let count = 0;
+				document
+					.querySelectorAll('.node-pill')
+					.forEach(function (pill) {
+						pill.classList.remove('highlight');
+						if (!q) return;
+						const text = pill.dataset.name || '';
+						if (text.indexOf(q) !== -1) {
+							pill.classList.add('highlight');
+							count++;
+							// expand ancestors
+							let p = pill.parentElement;
+							while (p) {
+								if (
+									p.classList &&
+									p.classList.contains('children-wrap')
+								) {
+									p.classList.remove('collapsed');
+								}
+								p = p.parentElement;
+							}
 						}
-					}
-				});
-				var rc = document.getElementById('result-count');
+					});
+				const rc = document.getElementById('result-count');
 				rc.textContent = q
 					? count === 0
-						? 'No matches found.'
+						? 'No matches.'
 						: count + ' match' + (count > 1 ? 'es' : '') + ' found'
 					: '';
+				setTimeout(drawAllConnectors, 50);
 			}
 
+			// Init
 			buildLegend();
-			renderTree();
+			const root = document.getElementById('vtree-root');
+			root.appendChild(buildVNode(familyData, 0));
+
+			// Draw connectors after layout
+			window.addEventListener('load', function () {
+				setTimeout(drawAllConnectors, 100);
+			});
+			window.addEventListener('resize', function () {
+				setTimeout(drawAllConnectors, 100);
+			});
+			document
+				.querySelector('.tree-scroll')
+				.addEventListener('scroll', function () {
+					drawAllConnectors();
+				});
 		</script>
 	</body>
 </html>
