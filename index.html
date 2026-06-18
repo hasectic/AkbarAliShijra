@@ -510,8 +510,26 @@
 										name: 'Adham Ali (ادہم علی)',
 										children: [
 											{
-												name: 'Ubedullah (عبیداللہ)',
+												name: 'Deen Ali (دین علی)'
+											},
+											{
+												name: 'Chaand Ali (چاند علی)'
+											},
+											{
+												name: 'Hafeezullah (حفیظ اللہ)',
 												children: [
+													{
+														name: 'Dilawar Ali (دلاور علی)'
+													},
+													{
+														name: 'Maula Ali (مولا علی)'
+													},
+													{
+														name: 'Naad Ali (ناد علی)'
+													},
+													{
+														name: 'Palat (پلیٹ)'
+													},
 													{
 														name: 'Akbar Ali (اکبر علی)',
 														children: [
@@ -691,11 +709,11 @@
 																							},
 																							{
 																								name: 'Md Zeyauddin (محمد ضیاء الدین)'
-																							},
-																							{
-																								name: 'Md Ehteshamuddin (محمد احتشام الدین)'
 																							}
 																						]
+																				},
+																				{
+																					name: 'Md Ehteshamuddin (محمد احتشام الدین)'
 																				}
 																			]
 																	},
@@ -969,7 +987,7 @@
 																								name: 'Inayatullah (عنایت اللہ)'
 																							},
 																							{
-																								name: 'Hidayatullah (ہدایت اللہ)'
+																								name: 'Hidayatullah (هدایت اللہ)'
 																							},
 																							{
 																								name: 'Ayatullah (آیت اللہ)'
@@ -1559,6 +1577,12 @@
 														]
 													}
 												]
+											},
+											{
+												name: 'Naad Ali (ناد علی)'
+											},
+											{
+												name: 'Palat (پلیٹ)'
 											}
 										]
 									}
@@ -1568,7 +1592,6 @@
 					}
 				]
 			};
-
 			// ── gen colors ──
 			const GEN_COLORS = [
 				'g0',
@@ -1636,6 +1659,8 @@
 			}
 
 			// Build the vertical top-down tree as nested DOM
+			// Inside your <script> tag in index.html, find the buildVNode function:
+
 			function buildVNode(person, depth) {
 				depth = depth || 0;
 				const hasChildren =
@@ -1672,8 +1697,13 @@
 				group.appendChild(pill);
 
 				if (hasChildren) {
-					// auto-expand first 5 gens
-					const expanded = depth < 4;
+					// CHANGED: Open the ancestors AND open Akbar Ali specifically,
+					// but do not open anything deeper than Akbar Ali's children.
+					const isAncestor = depth < 5;
+					const isAkbarAli = person.name
+						.toLowerCase()
+						.includes('akbar ali');
+					const expanded = isAncestor || isAkbarAli;
 
 					const childWrap = document.createElement('div');
 					childWrap.className =
