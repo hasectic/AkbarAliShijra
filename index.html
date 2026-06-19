@@ -519,16 +519,132 @@
 												name: 'Hafeezullah (حفیظ اللہ)',
 												children: [
 													{
-														name: 'Dilawar Ali (دلاور علی)'
+														name: 'Dilawar Ali (دلاور علی)',
+														children: [
+															{
+																name: 'Imam Ali (امام علی)',
+																children: [
+																	{
+																		name: 'Ishaque (اسحاق)',
+																		children: [
+																			{
+																				name: 'Israil (اسرائیل)',
+																				children: [
+																					{
+																						name: 'Feroze (فیروز)'
+																					},
+																					{
+																						name: 'Perwez (پرویز)'
+																					}
+																				]
+																			},
+																			{
+																				name: 'Saabir (صابر)',
+																				children: [
+																					{
+																						name: 'Shahid (شاہد)'
+																					},
+																					{
+																						name: 'Zahid (زاہد)'
+																					},
+																					{
+																						name: 'Majid (ماجد)'
+																					},
+																					{
+																						name: 'Saajid (ساجد)'
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		name: 'Razzaque (رزاق)'
+																	}
+																]
+															},
+															{
+																name: 'Munawwar Ali (منور علی)',
+																children: [
+																	{
+																		name: 'AbdulGhafoor (عبدالغفور)',
+																		children: [
+																			{
+																				name: 'Mukhtar (مختار)',
+																				children: [
+																					{
+																						name: 'Irfan (عرفان)'
+																					},
+																					{
+																						name: 'Sufian (سفیان)'
+																					},
+																					{
+																						name: 'Farhan (فرحان)'
+																					}
+																				]
+																			},
+																			{
+																				name: 'Iftekhar (افتخار)'
+																			},
+																			{
+																				name: 'Nazeer (نذیر)'
+																			},
+																			{
+																				name: 'Jeelani (جیلانی)'
+																			}
+																		]
+																	}
+																]
+															}
+														]
 													},
 													{
-														name: 'Maula Ali (مولا علی)'
-													},
-													{
-														name: 'Naad Ali (ناد علی)'
-													},
-													{
-														name: 'Palat (پلیٹ)'
+														name: 'Maula Ali (مولا علی)',
+														children: [
+															{
+																name: 'Zameeruddin (ضمیر الدین)',
+																children: [
+																	{
+																		name: 'Nurul-Haque (نور الحق)',
+																		children: [
+																			{
+																				name: 'Ansaar (انصار)',
+																				children: [
+																					{
+																						name: 'Muzaffar (مظفر)'
+																					},
+																					{
+																						name: 'Muzakkir (مذکر)'
+																					},
+																					{
+																						name: 'Mudassir (مدثر)'
+																					},
+																					{
+																						name: 'Imamul-Haque (امام الحق)'
+																					}
+																				]
+																			},
+																			{
+																				name: 'Anzaar (انذار)'
+																			},
+																			{
+																				name: 'Mumtaz (ممتاز)',
+																				children: [
+																					{
+																						name: 'Talha (طلحہ)'
+																					}
+																				]
+																			},
+																			{
+																				name: 'Abrar (ابرار)'
+																			},
+																			{
+																				name: 'Asrar (اسرار)'
+																			}
+																		]
+																	}
+																]
+															}
+														]
 													},
 													{
 														name: 'Akbar Ali (اکبر علی)',
@@ -1700,13 +1816,25 @@
 				group.appendChild(pill);
 
 				if (hasChildren) {
-					// CHANGED: Open the ancestors AND open Akbar Ali specifically,
-					// but do not open anything deeper than Akbar Ali's children.
-					const isAncestor = depth < 5;
-					const isAkbarAli = person.name
-						.toLowerCase()
-						.includes('akbar ali');
-					const expanded = isAncestor || isAkbarAli;
+					// Only auto-expand the direct ancestor chain leading to
+					// Akbar Ali, plus Akbar Ali itself. Siblings along that
+					// chain (e.g. Dilawar Ali, Maula Ali) stay collapsed,
+					// and nothing below Akbar Ali auto-expands.
+					const nameLower = person.name.toLowerCase();
+					const ANCESTOR_CHAIN = [
+						'quasim ali',
+						'abdullah',
+						'haidar ali',
+						'adham ali',
+						'hafeezullah'
+					];
+					const isAncestorChain = ANCESTOR_CHAIN.some(function (
+						n
+					) {
+						return nameLower.indexOf(n) !== -1;
+					});
+					const isAkbarAli = nameLower.includes('akbar ali');
+					const expanded = isAncestorChain || isAkbarAli;
 
 					const childWrap = document.createElement('div');
 					childWrap.className =
@@ -1849,11 +1977,50 @@
 			}
 
 			function toggleAll(state) {
-				document
-					.querySelectorAll('.children-wrap')
-					.forEach(function (w) {
-						w.classList.toggle('collapsed', !state);
-					});
+				if (state) {
+					// Expand All: open every node
+					document
+						.querySelectorAll('.children-wrap')
+						.forEach(function (w) {
+							w.classList.remove('collapsed');
+						});
+				} else {
+					// Collapse All: reset to default view —
+					// open only down to Akbar Ali, collapse everything else
+					document
+						.querySelectorAll('.node-group')
+						.forEach(function (group) {
+							const childWrap = group.querySelector(
+								':scope > .children-wrap'
+							);
+							if (!childWrap) return;
+							const pill = group.querySelector(
+								':scope > .node-pill'
+							);
+							const nameLower = (
+								pill.dataset.name || ''
+							).toLowerCase();
+							const ANCESTOR_CHAIN = [
+								'quasim ali',
+								'abdullah',
+								'haidar ali',
+								'adham ali',
+								'hafeezullah'
+							];
+							const isAncestorChain = ANCESTOR_CHAIN.some(
+								function (n) {
+									return nameLower.indexOf(n) !== -1;
+								}
+							);
+							const isAkbarAli =
+								nameLower.indexOf('akbar ali') !== -1;
+							const expanded = isAncestorChain || isAkbarAli;
+							childWrap.classList.toggle(
+								'collapsed',
+								!expanded
+							);
+						});
+				}
 				setTimeout(drawAllConnectors, 50);
 			}
 
